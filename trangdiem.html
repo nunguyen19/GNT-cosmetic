@@ -67,12 +67,12 @@
             }
         }
     /* phonecontainer, login container */
-    .phone-container, .login-container, .cart-container {
+    .phone-container, .login-container {
         margin-top: 30px;
         margin-left: 0px;
         text-align: center;
     }
-    .phone-container i, .login-container i, .cart-container i {
+    .phone-container i, .login-container i {
         color: rgb(213, 153, 158);
         font-size: 38px;
         transform: rotateY(180deg);
@@ -300,23 +300,6 @@
       border-radius: 5px;
       display: inline-block;
     }
-    .add-to-cart {
-      background-color: #f2b6b6;
-      width: auto;
-      color: #333;
-	  margin-left: 15px;
-	  margin-right: 15px;
-      padding: 5px;
-      border-radius: 10px;
-      text-align: center;
-      display: block;
-      text-decoration: none;
-
-    }
-    .add-to-cart:hover {
-      background-color: #e30000;
-      color: white;
-    }
     .pagination {
         display: flex;
         justify-content: center;
@@ -355,11 +338,8 @@
         border: none;
         font-size: 18px;
     }
-    .button-addtocart {
-        border: none;
-        background-color: #fff5f5;
-    }
 </style>
+<link rel="stylesheet" href="./cart.css">
 </head>
 <body>
     <div class="container-fluid">
@@ -386,7 +366,7 @@
                 </form>
             </div>
             <!-- contact -->
-            <div class="col-md-2 col-1 d-none d-sm-block">
+            <div class="col-md-2 col-1 d-none d-md-block">
                 <div class="phone-container">
                     <i class="fa fa-phone"></i>
                     <div class="d-none d-xl-inline-block">
@@ -396,7 +376,7 @@
                 </div>
             </div>
             <!-- register/login -->
-            <div class="col-md-2 col-1 d-none d-sm-block">
+            <div class="col-md-2 col-1 d-none d-md-block">
                 <div class="login-container">
                     <a href="./register.html"><i class="fa fa-user"></i></a>
                     <div class="d-none d-xl-inline-block">
@@ -406,18 +386,38 @@
                 </div>
             </div>
             <!-- cart -->
-            <div class="col-md-2 col-1">
-				<a href="./cart.html"  style="text-decoration: none;">
-					<div class="cart-container">
-						<i class="fa fa-cart-plus"></i>
-						<p class="d-none d-xl-inline-block text-black">Giỏ hàng</p>
-					</div> 
-				</a>
-			</div>
+            <div class="col-md-2 col-1 py-3">
+                <button id="cartButton" class="btn btn-outline-dark">
+                    <div class="cart-container">
+                        <i class="fa fa-cart-plus mt-2"></i>
+                        <span id="cartCount" class="badge bg-danger position-absolute translate-middle me-5">0</span>
+                        <p class="d-none d-lg-block text-black ms-2 pt-4">Giỏ hàng</p>
+                    </div> 
+                </button>
+                <div id="cartModal" class="modal fade bgmodal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Giỏ hàng của bạn</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="cartItems"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="w-100 d-flex justify-content-between">
+                                <span class="cart-total">Tổng tiền: 0₫</span>
+                                <button id="checkoutButton">Thanh toán</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row">
             <!-- navigation bar -->
-            <nav class="navbar navbar-expand-sm">
+            <nav class="navbar navbar-expand-md">
                 <button class="navbar-toggler ms-5 border-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
                     <span class="text-dark d-none d-xxl-inline">Danh mục sản phẩm</span>
@@ -448,11 +448,11 @@
 							<a class="nav-link" href="./home.html#categories7">TIN TỨC & LÀM ĐẸP</a>
 						</li> 
                         <!-- mở rộng contact - login -->
-                        <li class="nav-item phone-cont d-sm-none d-block">
+                        <li class="nav-item phone-cont d-md-none d-block">
                             <i class="fa fa-phone"></i>
                             <p>+1 6506671441</p>
                         </li>
-                        <li class="nav-item login-cont d-sm-none d-block">
+                        <li class="nav-item login-cont d-md-none d-block">
                             <i class="fa fa-user"></i>
                             <div class="d-inline">
                                 <a href="./register.html">Đăng Ký
@@ -551,17 +551,14 @@
             <div class="sort-section d-none d-xl-inline">
                 <ul>
                     <li><a href="#" class="fw-bold">Sắp xếp: </a></li>
-                    <li><a href="#">Tên A > Z</a></li>
-                    <li><a href="#">Tên Z > A</a></li>
-                    <li><a href="#">Giá tăng dần</a></li>
-                    <li><a href="#">Giá giảm dần</a></li>
+                    <li><a href="#" id="sortPriceAsc">Giá tăng dần</a></li>
+                    <!-- <li><a href="./CSDpage1Giamdan.html">Giá giảm dần</a></li> -->
+                    <li><a href="#" id="sortPriceDesc">Giá giảm dần</a></li>
                 </ul>
             </div>
             <div class="sort-dropdown nav-item dropdown d-xl-none d-inline">
                 <a class="nav-link dropdown-toggle sort-button" data-bs-toggle="dropdown" href="#">Sắp xếp: </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Tên A > Z</a></li>
-                    <li><a class="dropdown-item" href="#">Tên Z > A</a></li>
                     <li><a class="dropdown-item" href="#">Giá tăng dần</a></li>
                     <li><a class="dropdown-item" href="#">Giá giảm dần</a></li>
                 </ul>
@@ -600,7 +597,7 @@
                             <h5 class="product-title">CLUB CLIO</h5>
                             <p class="product-description">Son Nước Peripera Bóng Nhẹ Water Bare Tint 3.7g</p> 
                             <p class="product-price">189.240<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Son Nước Peripera Bóng Nhẹ Water Bare Tint 3.7g', 'https://img.upanh.tv/2024/11/21/104552cd-aec2-4065-8c0e-7cd6d0e3dd9a.webp', 189240)">
+                            <button class="button-addtocart" onclick="addToCart('Son Nước Peripera Bóng Nhẹ Water Bare Tint 3.7g', 'https://img.upanh.tv/2024/11/21/104552cd-aec2-4065-8c0e-7cd6d0e3dd9a.webp', 189240)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -619,7 +616,7 @@
                             <h5 class="product-title">DEAR DAHLIA</h5>
                             <p class="product-description">[Blooming Edition] Má Hồng Dạng Nước Dear Dahlia</p> 
                             <p class="product-price">639.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('[Blooming Edition] Má Hồng Dạng Nước Dear Dahlia', 'https://img.upanh.tv/2024/11/21/8e4c712d-bbc8-44f8-bc4e-bd45eecaa310.webp', 639000)">
+                            <button class="button-addtocart" onclick="addToCart('[Blooming Edition] Má Hồng Dạng Nước Dear Dahlia', 'https://img.upanh.tv/2024/11/21/8e4c712d-bbc8-44f8-bc4e-bd45eecaa310.webp', 639000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -638,7 +635,7 @@
                             <h5 class="product-title">CLUB CLIO</h5>
                             <p class="product-description">(Phiên bản Luxury Koshort) Bảng Màu Mắt 12ô Clio</p> 
                             <p class="product-price">549.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('(Phiên bản Luxury Koshort) Bảng Màu Mắt 12ô Clio', 'https://img.upanh.tv/2024/11/21/80be824f-ba3c-4962-9ebd-42a52f18e36d.webp', 549000)">
+                            <button class="button-addtocart" onclick="addToCart('(Phiên bản Luxury Koshort) Bảng Màu Mắt 12ô Clio', 'https://img.upanh.tv/2024/11/21/80be824f-ba3c-4962-9ebd-42a52f18e36d.webp', 549000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -657,7 +654,7 @@
                             <h5 class="product-title">DEAR DAHLIA</h5>
                             <p class="product-description">Son Thỏi Hiệu Ứng Lì Mịn Dear Dahlia Lip Paradise</p> 
                             <p class="product-price">704.650<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Son Thỏi Hiệu Ứng Lì Mịn Dear Dahlia Lip Paradise', 'https://img.upanh.tv/2024/11/21/05bbe14e-fd49-4889-9e9a-9abad62ed915.webp', 704650)">
+                            <button class="button-addtocart" onclick="addToCart('Son Thỏi Hiệu Ứng Lì Mịn Dear Dahlia Lip Paradise', 'https://img.upanh.tv/2024/11/21/05bbe14e-fd49-4889-9e9a-9abad62ed915.webp', 704650)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -676,7 +673,7 @@
                             <h5 class="product-title">CLUB CLIO</h5>
                             <p class="product-description">Bút Kẻ Viền Mắt Chống Trôi Clio Superproof Brush</p> 
                             <p class="product-price">419.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Bút Kẻ Viền Mắt Chống Trôi Clio Superproof Brush', 'https://img.upanh.tv/2024/11/21/d82a03c8-b761-4adb-9148-72892069b6b6.webp', 419000)">
+                            <button class="button-addtocart" onclick="addToCart('Bút Kẻ Viền Mắt Chống Trôi Clio Superproof Brush', 'https://img.upanh.tv/2024/11/21/d82a03c8-b761-4adb-9148-72892069b6b6.webp', 419000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -695,7 +692,7 @@
                             <h5 class="product-title">CLUB CLIO</h5>
                             <p class="product-description">Mascara Làm Cong Mi, Chống Trôi Clio Kill Lash</p> 
                             <p class="product-price">269.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Mascara Làm Cong Mi, Chống Trôi Clio Kill Lash', 'https://img.upanh.tv/2024/11/21/7edfe4cf-010e-483a-be89-545b460823d5.webp', 269000)">
+                            <button class="button-addtocart" onclick="addToCart('Mascara Làm Cong Mi, Chống Trôi Clio Kill Lash', 'https://img.upanh.tv/2024/11/21/7edfe4cf-010e-483a-be89-545b460823d5.webp', 269000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -714,7 +711,7 @@
                             <h5 class="product-title">FRESHIAN</h5>
                             <p class="product-description">Son Dưỡng Freshian Thuần Chay Làm Mềm Môi Sensual</p> 
                             <p class="product-price">569.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Son Dưỡng Freshian Thuần Chay Làm Mềm Môi Sensual', 'https://img.upanh.tv/2024/11/21/c7b452e3-eb37-466f-9dce-a504b9f736a3.webp', 569000)">
+                            <button class="button-addtocart" onclick="addToCart('Son Dưỡng Freshian Thuần Chay Làm Mềm Môi Sensual', 'https://img.upanh.tv/2024/11/21/c7b452e3-eb37-466f-9dce-a504b9f736a3.webp', 569000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -733,7 +730,7 @@
                             <h5 class="product-title">MUDE</h5>
                             <p class="product-description">Mascara Mude Chuốt Mi Dài Tự Nhiên Inspire Skinny</p> 
                             <p class="product-price">300.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Mascara Mude Chuốt Mi Dài Tự Nhiên Inspire Skinny', 'https://img.upanh.tv/2024/11/21/5d98599a-1d5d-487f-a733-d4605115c636.webp', 300000)">
+                            <button class="button-addtocart" onclick="addToCart('Mascara Mude Chuốt Mi Dài Tự Nhiên Inspire Skinny', 'https://img.upanh.tv/2024/11/21/5d98599a-1d5d-487f-a733-d4605115c636.webp', 300000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -752,7 +749,7 @@
                             <h5 class="product-title">CLUB CLIO</h5>
                             <p class="product-description">Phấn Nước Clio Che Khuyết Điểm Hoàn Hảo Kill Cover</p> 
                             <p class="product-price">495.670<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Phấn Nước Clio Che Khuyết Điểm Hoàn Hảo Kill Cover', 'https://img.upanh.tv/2024/11/21/87d9398f-1dc8-4a8c-b87d-af9892c2ee38.webp', 495670)">
+                            <button class="button-addtocart" onclick="addToCart('Phấn Nước Clio Che Khuyết Điểm Hoàn Hảo Kill Cover', 'https://img.upanh.tv/2024/11/21/87d9398f-1dc8-4a8c-b87d-af9892c2ee38.webp', 495670)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -769,9 +766,9 @@
                                 <i class="fa fa-heart"></i>
                             </button>													
                             <h5 class="product-title">DEAR DAHLIA</h5>
-                            <p class="product-description">Son Kem Hiệu Ứng Nhung Mịn Dear Dahlia Paradise Dream</p><br> 
+                            <p class="product-description">Son Kem Hiệu Ứng Nhung Mịn Dear Dahlia Paradise Dream</p>
                             <p class="product-price">749.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Son Kem Hiệu Ứng Nhung Mịn Dear Dahlia Paradise Dream', 'https://img.upanh.tv/2024/11/21/b7f3f26e-8179-415e-95ba-a489a7accad1.webp', 749000)">
+                            <button class="button-addtocart" onclick="addToCart('Son Kem Hiệu Ứng Nhung Mịn Dear Dahlia Paradise Dream', 'https://img.upanh.tv/2024/11/21/b7f3f26e-8179-415e-95ba-a489a7accad1.webp', 749000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -790,7 +787,7 @@
                             <h5 class="product-title">CLUB CLIO</h5>
                             <p class="product-description">Phấn Nước Clio Kiềm Dầu, Lâu Trôi Kill Cover Skin</p> 
                             <p class="product-price">509.250<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Phấn Nước Clio Kiềm Dầu, Lâu Trôi Kill Cover Skin', 'https://img.upanh.tv/2024/11/21/bf90024c-c7c0-4343-9366-2af1314c1fa5.webp', 509250)">
+                            <button class="button-addtocart" onclick="addToCart('Phấn Nước Clio Kiềm Dầu, Lâu Trôi Kill Cover Skin', 'https://img.upanh.tv/2024/11/21/bf90024c-c7c0-4343-9366-2af1314c1fa5.webp', 509250)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -809,7 +806,7 @@
                             <h5 class="product-title">MAYBELLINE</h5>
                             <p class="product-description">Kem Nền Sáng Da Chống Nắng Mỏng Nhẹ, Kiềm Dầu Maybelline</p> 
                             <p class="product-price">228.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Kem Nền Sáng Da Chống Nắng Mỏng Nhẹ, Kiềm Dầu Maybelline', 'https://img.upanh.tv/2024/11/21/81a6fd07-4923-4cdc-a04d-8b9a3b321170.webp', 228000)">
+                            <button class="button-addtocart" onclick="addToCart('Kem Nền Sáng Da Chống Nắng Mỏng Nhẹ, Kiềm Dầu Maybelline', 'https://img.upanh.tv/2024/11/21/81a6fd07-4923-4cdc-a04d-8b9a3b321170.webp', 228000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -828,7 +825,7 @@
                             <h5 class="product-title">DEAR DAHLIA</h5>
                             <p class="product-description">Màu Mắt Dạng Bút Dear Dahlia Ánh Nhũ Perfect Designing</p> 
                             <p class="product-price">577.150<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Màu Mắt Dạng Bút Dear Dahlia Ánh Nhũ Perfect Designing', 'https://img.upanh.tv/2024/11/21/fb2f528f-69c3-48f7-bfa5-bfd00757cfec.webp', 577150)">
+                            <button class="button-addtocart" onclick="addToCart('Màu Mắt Dạng Bút Dear Dahlia Ánh Nhũ Perfect Designing', 'https://img.upanh.tv/2024/11/21/fb2f528f-69c3-48f7-bfa5-bfd00757cfec.webp', 577150)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -847,7 +844,7 @@
                             <h5 class="product-title">PERIPERA</h5>
                             <p class="product-description">Bảng Màu Mắt Đa Hiệu Ứng Peripera All Take Mood Palette</p> 
                             <p class="product-price">327.180<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Bảng Màu Mắt Đa Hiệu Ứng Peripera All Take Mood Palette', 'https://img.upanh.tv/2024/11/21/b736fbd8-99ae-40f0-8c6b-2174495c8cf8.webp', 327180)">
+                            <button class="button-addtocart" onclick="addToCart('Bảng Màu Mắt Đa Hiệu Ứng Peripera All Take Mood Palette', 'https://img.upanh.tv/2024/11/21/b736fbd8-99ae-40f0-8c6b-2174495c8cf8.webp', 327180)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -866,7 +863,7 @@
                             <h5 class="product-title">CLUB CLIO</h5>
                             <p class="product-description">Kem Che Khuyết Điểm Clio Kill Cover Founwear Concealer</p> 
                             <p class="product-price">258.260<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Kem Che Khuyết Điểm Clio Kill Cover Founwear Concealer', 'https://img.upanh.tv/2024/11/21/22551f24-2ff3-40a2-bdd4-271afde95d29.webp', 258260)">
+                            <button class="button-addtocart" onclick="addToCart('Kem Che Khuyết Điểm Clio Kill Cover Founwear Concealer', 'https://img.upanh.tv/2024/11/21/22551f24-2ff3-40a2-bdd4-271afde95d29.webp', 258260)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -885,7 +882,7 @@
                             <h5 class="product-title">OFÉLIA</h5>
                             <p class="product-description">Má Hồng Dạng Kem Ofélia Lolli Liquid Blush 4.3g</p> 
                             <p class="product-price">183.876<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Má Hồng Dạng Kem Ofélia Lolli Liquid Blush 4.3g', 'https://img.upanh.tv/2024/11/21/b85736fd-47e8-40e8-bed1-1dc1d76d7727.webp', 183876)">
+                            <button class="button-addtocart" onclick="addToCart('Má Hồng Dạng Kem Ofélia Lolli Liquid Blush 4.3g', 'https://img.upanh.tv/2024/11/21/b85736fd-47e8-40e8-bed1-1dc1d76d7727.webp', 183876)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -904,7 +901,7 @@
                             <h5 class="product-title">DEAR DAHLIA</h5>
                             <p class="product-description">Má Hồng Trang Điểm Dear Dahlia Blooming Edition Petal</p> 
                             <p class="product-price">594.150<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Má Hồng Trang Điểm Dear Dahlia Blooming Edition Petal', 'https://img.upanh.tv/2024/11/21/e976d1c9-26cd-4e91-b779-75fdd583c751.webp', 594150)">
+                            <button class="button-addtocart" onclick="addToCart('Má Hồng Trang Điểm Dear Dahlia Blooming Edition Petal', 'https://img.upanh.tv/2024/11/21/e976d1c9-26cd-4e91-b779-75fdd583c751.webp', 594150)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -923,7 +920,7 @@
                             <h5 class="product-title">CLUB CLIO</h5>
                             <p class="product-description">Phấn Nước Che Khuyết Điểm Mịn Clio Kill Cover The New</p> 
                             <p class="product-price">495.670<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Phấn Nước Che Khuyết Điểm Mịn Clio Kill Cover The New', 'https://img.upanh.tv/2024/11/21/1a793c93-7bf8-4e1f-b7da-5150f15bf2a3.webp', 495670)">
+                            <button class="button-addtocart" onclick="addToCart('Phấn Nước Che Khuyết Điểm Mịn Clio Kill Cover The New', 'https://img.upanh.tv/2024/11/21/1a793c93-7bf8-4e1f-b7da-5150f15bf2a3.webp', 495670)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -1013,32 +1010,34 @@
 					<p>Chi nhánh 2: 290 Phạm Ngũ Lão, Phú Hội, TP. Huế</p>
 				</div>
 			</div>
-			<div class="col-md-6">
-				<h5 class="text-center">PHƯƠNG THỨC THANH TOÁN</h5>
-				<div class="text-center">
-					<div class="container text-center mt-3">
-						<div class="row justify-content-center mt-4">
-							<div class="col-md-12 d-flex justify-content-center payment-container">
-								<a href="https://www.visa.com.vn/vi_VN/pay-with-visa/featured-technologies/mobile-payments.html" class="payment-icon">
-									<img src="https://img.upanh.tv/2024/10/30/VISA-Logo-1976.png" alt="Visa Payment" class="img-fluid" style="max-width: 90px;">
-								</a>
-								<a href="https://developers.momo.vn/v3/vi/docs/payment/guides/payment-with-aio/" class="payment-icon">
-									<img src="https://img.upanh.tv/2024/10/30/mom.jpg" alt="MoMo Payment" class="img-fluid">
-								</a>
-								<a href="https://vivnpay.vn/blog/vnpayqr-vi-vnpay" target="_blank" class="payment-icon">
-									<img src="https://img.upanh.tv/2024/10/30/vnpay.png" alt="VNPay Payment" class="img-fluid">
-								</a>
-								<a href="https://zalopay.vn/" target="_blank" class="payment-icon">
-									<img src="https://img.upanh.tv/2024/10/30/Logo-ZaloPay-Square.jpg" alt="ZaloPay Payment" class="img-fluid">
-								</a>
-								<a href="https://ghn.vn/" target="_blank" class="payment-icon" style="margin-top: -12px">
-									<img src="https://img.upanh.tv/2024/10/30/Logo-GHN.png" alt="GHN" class="img-fluid" style="max-width: 140px;">
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>			
+			<div class="row">
+                <div class="col-md-6">
+                    <h5 class="text-center">PHƯƠNG THỨC THANH TOÁN</h5>
+                    <div class="text-center">
+                        <div class="container text-center mt-3">
+                            <div class="justify-content-center mt-4">
+                                <div class="d-flex justify-content-center payment-container">
+                                    <a href="https://www.visa.com.vn/vi_VN/pay-with-visa/featured-technologies/mobile-payments.html" class="payment-icon">
+                                        <img src="https://img.upanh.tv/2024/10/30/VISA-Logo-1976.png" alt="Visa Payment" class="img-fluid" style="max-width: 80px;">
+                                    </a>
+                                    <a href="https://developers.momo.vn/v3/vi/docs/payment/guides/payment-with-aio/" class="payment-icon">
+                                        <img src="https://img.upanh.tv/2024/10/30/mom.jpg" alt="MoMo Payment" class="img-fluid"  style="width: 40px;">
+                                    </a>
+                                    <a href="https://vivnpay.vn/blog/vnpayqr-vi-vnpay" target="_blank" class="payment-icon">
+                                        <img src="https://img.upanh.tv/2024/10/30/vnpay.png" alt="VNPay Payment" class="img-fluid"  style="width: 40px;">
+                                    </a>
+                                    <a href="https://zalopay.vn/" target="_blank" class="payment-icon">
+                                        <img src="https://img.upanh.tv/2024/10/30/Logo-ZaloPay-Square.jpg" alt="ZaloPay Payment" class="img-fluid" style="width: 40px;">
+                                    </a>
+                                    <a href="https://ghn.vn/" target="_blank" class="payment-icon" style="margin-top: -12px">
+                                        <img src="https://img.upanh.tv/2024/11/26/Logo-GHN-Orange.webp?fbclid=IwY2xjawGydJdleHRuA2FlbQIxMAABHVDd1i3r_hU6MLHztyuS8qY2-bJ5YRG9bJD3_c4ZtwsQuZ4edsM575VIXA_aem_Cr4WcULiY3KHxxwzT3CofA" alt="GHN" class="img-fluid">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>	
+            </div>			
 			<div class="row">
 				<div class="text-center mt-4 border-top border-dark">
 					<p class="pt-4 pt-lg-5">© Bản quyền thuộc công ty G.N.T COSMETICS | Cung cấp bởi Sapo</p>
@@ -1046,7 +1045,7 @@
 			</div>
 		</div>
 	</section> <!--footer-->
-<script src="./cart.js"></script>
+<script src="./js/main.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
 <script>
@@ -1064,5 +1063,6 @@
     });
 }
 </script>
+<script src="./script2.js"></script>
 </body>
 </html>

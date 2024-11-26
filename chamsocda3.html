@@ -67,12 +67,12 @@
             }
         }
     /* phonecontainer, login container */
-    .phone-container, .login-container, .cart-container {
+    .phone-container, .login-container {
         margin-top: 30px;
         margin-left: 0px;
         text-align: center;
     }
-    .phone-container i, .login-container i, .cart-container i {
+    .phone-container i, .login-container i {
         color: rgb(213, 153, 158);
         font-size: 38px;
         transform: rotateY(180deg);
@@ -300,23 +300,6 @@
       border-radius: 5px;
       display: inline-block;
     }
-    .add-to-cart {
-      background-color: #f2b6b6;
-      width: auto;
-      color: #333;
-	  margin-left: 15px;
-	  margin-right: 15px;
-      padding: 5px;
-      border-radius: 10px;
-      text-align: center;
-      display: block;
-      text-decoration: none;
-
-    }
-    .add-to-cart:hover {
-      background-color: #e30000;
-      color: white;
-    }
     .pagination {
         display: flex;
         justify-content: center;
@@ -355,11 +338,8 @@
         border: none;
         font-size: 18px;
     }
-    .button-addtocart {
-        border: none;
-        background-color: #fff5f5;
-    }
 </style>
+<link rel="stylesheet" href="./cart.css">
 </head>
 <body>
     <div class="container-fluid">
@@ -386,7 +366,7 @@
                 </form>
             </div>
             <!-- contact -->
-            <div class="col-md-2 col-1 d-none d-sm-block">
+            <div class="col-md-2 col-1 d-none d-md-block">
                 <div class="phone-container">
                     <i class="fa fa-phone"></i>
                     <div class="d-none d-xl-inline-block">
@@ -396,7 +376,7 @@
                 </div>
             </div>
             <!-- register/login -->
-            <div class="col-md-2 col-1 d-none d-sm-block">
+            <div class="col-md-2 col-1 d-none d-md-block">
                 <div class="login-container">
                     <a href="./register.html"><i class="fa fa-user"></i></a>
                     <div class="d-none d-xl-inline-block">
@@ -406,18 +386,38 @@
                 </div>
             </div>
             <!-- cart -->
-            <div class="col-md-2 col-1">
-				<a href="./cart.html"  style="text-decoration: none;">
-					<div class="cart-container">
-						<i class="fa fa-cart-plus"></i>
-						<p class="d-none d-xl-inline-block text-black">Giỏ hàng</p>
-					</div> 
-				</a>
-			</div>
+            <div class="col-md-2 col-1 py-3">
+                <button id="cartButton" class="btn btn-outline-dark">
+                    <div class="cart-container">
+                        <i class="fa fa-cart-plus mt-2"></i>
+                        <span id="cartCount" class="badge bg-danger position-absolute translate-middle me-5">0</span>
+                        <p class="d-none d-lg-block text-black ms-2 pt-4">Giỏ hàng</p>
+                    </div> 
+                </button>
+                <div id="cartModal" class="modal fade bgmodal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Giỏ hàng của bạn</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="cartItems"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="w-100 d-flex justify-content-between">
+                                <span class="cart-total">Tổng tiền: 0₫</span>
+                                <button id="checkoutButton">Thanh toán</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row">
             <!-- navigation bar -->
-            <nav class="navbar navbar-expand-sm">
+            <nav class="navbar navbar-expand-md">
                 <button class="navbar-toggler ms-5 border-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
                     <span class="text-dark d-none d-xxl-inline">Danh mục sản phẩm</span>
@@ -448,11 +448,11 @@
 							<a class="nav-link" href="./home.html#categories7">TIN TỨC & LÀM ĐẸP</a>
 						</li> 
                         <!-- mở rộng contact - login -->
-                        <li class="nav-item phone-cont d-sm-none d-block">
+                        <li class="nav-item phone-cont d-md-none d-block">
                             <i class="fa fa-phone"></i>
                             <p>+1 6506671441</p>
                         </li>
-                        <li class="nav-item login-cont d-sm-none d-block">
+                        <li class="nav-item login-cont d-md-none d-block">
                             <i class="fa fa-user"></i>
                             <div class="d-inline">
                                 <a href="./register.html">Đăng Ký
@@ -575,17 +575,14 @@
             <div class="sort-section d-none d-xl-inline">
                 <ul>
                     <li><a href="#" class="fw-bold">Sắp xếp: </a></li>
-                    <li><a href="#">Tên A > Z</a></li>
-                    <li><a href="#">Tên Z > A</a></li>
-                    <li><a href="#">Giá tăng dần</a></li>
-                    <li><a href="#">Giá giảm dần</a></li>
+                    <li><a href="#" id="sortPriceAsc">Giá tăng dần</a></li>
+                    <!-- <li><a href="./CSDpage1Giamdan.html">Giá giảm dần</a></li> -->
+                    <li><a href="#" id="sortPriceDesc">Giá giảm dần</a></li>
                 </ul>
             </div>
             <div class="sort-dropdown nav-item dropdown d-xl-none d-inline">
                 <a class="nav-link dropdown-toggle sort-button" data-bs-toggle="dropdown" href="#">Sắp xếp: </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Tên A > Z</a></li>
-                    <li><a class="dropdown-item" href="#">Tên Z > A</a></li>
                     <li><a class="dropdown-item" href="#">Giá tăng dần</a></li>
                     <li><a class="dropdown-item" href="#">Giá giảm dần</a></li>
                 </ul>
@@ -604,7 +601,7 @@
                             <h5 class="product-title">BEPLAIN</h5>
                             <p class="product-description">Gel Tẩy Tế Bào Chết Beplain Làm Sạch Da Mung Bean Milk Peeling</p> 
                             <p class="product-price">306.000<sup>đ</sup> </p>
-                            <button class="button-addtocart add-to-cart" 
+                            <button class="button-addtocart" 
                                 onclick="addToCart('Gel Tẩy Tế Bào Chết Beplain Làm Sạch Da Mung Bean Milk Peeling', 'https://img.upanh.tv/2024/11/20/sp1_chamsocda3.webp', 306000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
@@ -622,7 +619,7 @@
                             <h5 class="product-title">SKINFOOD</h5>
                             <p class="product-description">Mặt Nạ Tẩy Da Chết Skinfood Black Sugar Mask Wash Off</p> 
                             <p class="product-price">236.250<sup>đ</sup> </p>
-                            <button class="button-addtocart add-to-cart" 
+                            <button class="button-addtocart" 
                                 onclick="addToCart('Mặt Nạ Tẩy Da Chết Skinfood Black Sugar Mask Wash Off', 'https://img.upanh.tv/2024/11/21/b0127c6e-3c22-446c-a639-208225b2abeb.webp', 236250)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
@@ -640,7 +637,7 @@
                             <h5 class="product-title">GOODAL</h5>
                             <p class="product-description">Mặt Nạ Dưỡng Vùng Mắt Goodal Green Tangerine Vita C Eye Gel</p> 
                             <p class="product-price">344.250<sup>đ</sup> </p>
-                            <button class="button-addtocart add-to-cart" 
+                            <button class="button-addtocart" 
                                 onclick="addToCart('Mặt Nạ Dưỡng Vùng Mắt Goodal Green Tangerine Vita C Eye Gel', 'https://img.upanh.tv/2024/11/21/0bdd60a5-c204-49f4-a31f-ce06ef2b1811.webp', 344250)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
@@ -658,7 +655,7 @@
                             <h5 class="product-title">COSRX</h5>
                             <p class="product-description">Sữa Rửa Mặt Dạng Gel Cosrx Low Ph Good Morning Gel</p> 
                             <p class="product-price">339.000<sup>đ</sup> </p>
-                            <button class="button-addtocart add-to-cart" 
+                            <button class="button-addtocart" 
                                 onclick="addToCart('Sữa Rửa Mặt Dạng Gel Cosrx Low Ph Good Morning Gel', 'https://img.upanh.tv/2024/11/21/62e18232-c84c-447f-bce8-b6e627f8a1fc.webp', 339000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
@@ -676,7 +673,7 @@
                             <h5 class="product-title">SOME BY MI</h5>
                             <p class="product-description">Gel Rửa Mặt Some By Mi Phục Hồi Dành Cho Da Nhạy Cảm</p> 
                             <p class="product-price">340.850<sup>đ</sup> </p>
-                            <button class="button-addtocart add-to-cart" 
+                            <button class="button-addtocart" 
                                 onclick="addToCart('Gel Rửa Mặt Some By Mi Phục Hồi Dành Cho Da Nhạy Cảm', 'https://img.upanh.tv/2024/11/21/1e3a681d-7304-4661-9b3e-cd4fc0ee7b70.webp', 340850)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
@@ -694,7 +691,7 @@
                             <h5 class="product-title">MURAD</h5>
                             <p class="product-description">Sữa Rửa Mặt Giảm Mụn Murad Clarifying Cleanser</p> 
                             <p class="product-price">1.013.700<sup>đ</sup> </p>
-                            <button class="button-addtocart add-to-cart" 
+                            <button class="button-addtocart" 
                                 onclick="addToCart('Sữa Rửa Mặt Giảm Mụn Murad Clarifying Cleanser', 'https://img.upanh.tv/2024/11/21/7e2e36ae-2876-41ca-b6f3-222b5e817545.webp', 1013700)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
@@ -713,7 +710,7 @@
                             <h5 class="product-title">INNISFREE</h5>
                             <p class="product-description">Nước Tẩy Trang Làm Ẩm Da INNISFREE Green Tea Amino</p> 
                             <p class="product-price">312.000<sup>đ</sup> </p>
-                            <button class="button-addtocart add-to-cart"  onclick="addToCart('Nước Tẩy Trang Làm Ẩm Da INNISFREE Green Tea Amino', 'https://img.upanh.tv/2024/11/21/354da314-8409-4049-9a05-33deab4ccedf.webp', 312000)">
+                            <button class="button-addtocart"  onclick="addToCart('Nước Tẩy Trang Làm Ẩm Da INNISFREE Green Tea Amino', 'https://img.upanh.tv/2024/11/21/354da314-8409-4049-9a05-33deab4ccedf.webp', 312000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -730,7 +727,7 @@
                             <h5 class="product-title">CAREZONE</h5>
                             <p class="product-description">Sữa Rửa Mặt Carezone Cân Bằng Da pH Balancing Foam</p> 
                             <p class="product-price">297.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Sữa Rửa Mặt Carezone Cân Bằng Da pH Balancing Foam', 'https://img.upanh.tv/2024/11/21/a135ce5d-39f6-4ea4-bfd3-0527e69fc3d4.webp', 297000)">
+                            <button class="button-addtocart" onclick="addToCart('Sữa Rửa Mặt Carezone Cân Bằng Da pH Balancing Foam', 'https://img.upanh.tv/2024/11/21/a135ce5d-39f6-4ea4-bfd3-0527e69fc3d4.webp', 297000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -748,7 +745,7 @@
                             <h5 class="product-title">AESTURA</h5>
                             <p class="product-description">Sữa Rửa Mặt Mềm Da Aestura Theracne 365 Clear Deep</p> 
                             <p class="product-price">99.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Sữa Rửa Mặt Mềm Da Aestura Theracne 365 Clear Deep', 'https://img.upanh.tv/2024/11/21/55b02af2-a9ce-4776-9c68-4d7c7653ddfb.webp', 99000)">
+                            <button class="button-addtocart" onclick="addToCart('Sữa Rửa Mặt Mềm Da Aestura Theracne 365 Clear Deep', 'https://img.upanh.tv/2024/11/21/55b02af2-a9ce-4776-9c68-4d7c7653ddfb.webp', 99000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -766,7 +763,7 @@
                             <h5 class="product-title">SVR</h5>
                             <p class="product-description">Gel Rửa Mặt Không Xà Phòng Cho Da Dầu Svr Sebiaclear</p> 
                             <p class="product-price">351.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Gel Rửa Mặt Không Xà Phòng Cho Da Dầu Svr Sebiaclear', 'https://img.upanh.tv/2024/11/21/fa5bb238-c7eb-42b2-b466-253a6724d103.webp', 351000)">
+                            <button class="button-addtocart" onclick="addToCart('Gel Rửa Mặt Không Xà Phòng Cho Da Dầu Svr Sebiaclear', 'https://img.upanh.tv/2024/11/21/fa5bb238-c7eb-42b2-b466-253a6724d103.webp', 351000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -784,7 +781,7 @@
                             <h5 class="product-title">SKINFOOD</h5>
                             <p class="product-description">Sữa Rửa Mặt Có Hạt Skinfood Black Sugar Perfect Scrub</p> 
                             <p class="product-price">265.850<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Sữa Rửa Mặt Có Hạt Skinfood Black Sugar Perfect Scrub', 'https://img.upanh.tv/2024/11/21/04fb83bf-f1c5-46eb-929c-0b717c548f43.webp', 265850)">
+                            <button class="button-addtocart" onclick="addToCart('Sữa Rửa Mặt Có Hạt Skinfood Black Sugar Perfect Scrub', 'https://img.upanh.tv/2024/11/21/04fb83bf-f1c5-46eb-929c-0b717c548f43.webp', 265850)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -802,7 +799,7 @@
                             <h5 class="product-title">LA ROCHER-POSAY</h5>
                             <p class="product-description">Sữa Rửa Mặt La Roche-Posay Mờ Thâm Sáng Da Mela B3</p> 
                             <p class="product-price">539.100<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Sữa Rửa Mặt La Roche-Posay Mờ Thâm Sáng Da Mela B3', 'https://img.upanh.tv/2024/11/21/5a472e2b-fcd8-498d-8f60-0c4dc15fdb12.webp', 539100)">
+                            <button class="button-addtocart" onclick="addToCart('Sữa Rửa Mặt La Roche-Posay Mờ Thâm Sáng Da Mela B3', 'https://img.upanh.tv/2024/11/21/5a472e2b-fcd8-498d-8f60-0c4dc15fdb12.webp', 539100)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -820,7 +817,7 @@
                             <h5 class="product-title">SKINFOOD</h5>
                             <p class="product-description">Nước Tẩy Trang Dạng Sữa Skinfood Milk Shake Point</p> 
                             <p class="product-price">252.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Nước Tẩy Trang Dạng Sữa Skinfood Milk Shake Point', 'https://img.upanh.tv/2024/11/21/5067d207-d63b-4247-b10e-5c5150af05f7.webp', 252000)">
+                            <button class="button-addtocart" onclick="addToCart('Nước Tẩy Trang Dạng Sữa Skinfood Milk Shake Point', 'https://img.upanh.tv/2024/11/21/5067d207-d63b-4247-b10e-5c5150af05f7.webp', 252000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -838,7 +835,7 @@
                             <h5 class="product-title">HADALABO</h5>
                             <p class="product-description">Dầu Tẩy Trang Cấp Ẩm Hada Labo Advanced Nourish</p> 
                             <p class="product-price">212.800<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Dầu Tẩy Trang Cấp Ẩm Hada Labo Advanced Nourish', 'https://img.upanh.tv/2024/11/21/1b865bb7-b09f-4984-9525-03fa21dbc297.webp', 212800)">
+                            <button class="button-addtocart" onclick="addToCart('Dầu Tẩy Trang Cấp Ẩm Hada Labo Advanced Nourish', 'https://img.upanh.tv/2024/11/21/1b865bb7-b09f-4984-9525-03fa21dbc297.webp', 212800)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -857,7 +854,7 @@
                             <h5 class="product-title">BIODERMA</h5>
                             <p class="product-description">Sữa Rửa Mặt Giảm Mụn Bioderma Sebium Gel Moussant</p> 
                             <p class="product-price">365.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Sữa Rửa Mặt Giảm Mụn Bioderma Sebium Gel Moussant', 'https://image.hsv-tech.io/600x600/bbx/common/4fbe17c0-5f72-4363-96f7-8dbdcf4b084e.webp', 365000)">
+                            <button class="button-addtocart" onclick="addToCart('Sữa Rửa Mặt Giảm Mụn Bioderma Sebium Gel Moussant', 'https://image.hsv-tech.io/600x600/bbx/common/4fbe17c0-5f72-4363-96f7-8dbdcf4b084e.webp', 365000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -876,7 +873,7 @@
                             <h5 class="product-title">KLAVUU</h5>
                             <p class="product-description">Sữa Rửa Mặt Klavuu Ngăn Ngừa Lão Hóa Da Revitalizing</p> 
                             <p class="product-price">447.200<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Sữa Rửa Mặt Klavuu Ngăn Ngừa Lão Hóa Da Revitalizing', 'https://img.upanh.tv/2024/11/21/74cd047b-5969-428d-8cd3-613458be93a3.webp', 447200)">
+                            <button class="button-addtocart" onclick="addToCart('Sữa Rửa Mặt Klavuu Ngăn Ngừa Lão Hóa Da Revitalizing', 'https://img.upanh.tv/2024/11/21/74cd047b-5969-428d-8cd3-613458be93a3.webp', 447200)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -895,7 +892,7 @@
                             <h5 class="product-title">D PROGRAM</h5>
                             <p class="product-description">Sữa Rửa Mặt Tạo Bọt Dưỡng Da D Program Essence</p> 
                             <p class="product-price">390.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Sữa Rửa Mặt Tạo Bọt Dưỡng Da D Program Essence', 'https://img.upanh.tv/2024/11/21/6939e10e-bef7-4e68-8a03-be2e04d8402e.webp', 390000)">
+                            <button class="button-addtocart" onclick="addToCart('Sữa Rửa Mặt Tạo Bọt Dưỡng Da D Program Essence', 'https://img.upanh.tv/2024/11/21/6939e10e-bef7-4e68-8a03-be2e04d8402e.webp', 390000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -914,7 +911,7 @@
                             <h5 class="product-title">THE LAB</h5>
                             <p class="product-description">Bọt Sữa Rửa Mặt Cho Da Mụn Dr.Belmeur</p>
                             <p class="product-price">529.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Bọt Sữa Rửa Mặt Cho Da Mụn Dr.Belmeur', 'https://img.upanh.tv/2024/11/21/11304636-c686-4a07-953a-f9274da38bc2.webp', 529000)">
+                            <button class="button-addtocart" onclick="addToCart('Bọt Sữa Rửa Mặt Cho Da Mụn Dr.Belmeur', 'https://img.upanh.tv/2024/11/21/11304636-c686-4a07-953a-f9274da38bc2.webp', 529000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -933,7 +930,7 @@
                             <h5 class="product-title">BELIF</h5>
                             <p class="product-description">Nước Tẩy Trang Thảo Mộc Làm Sạch Sâu Belif Cleansing</p> 
                             <p class="product-price">880.000<sup>đ</sup> </p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Nước Tẩy Trang Thảo Mộc Làm Sạch Sâu Belif Cleansing', 'https://img.upanh.tv/2024/11/21/fbc518e4-2c9a-4b1e-8656-53ce09313756.webp', 880000)">
+                            <button class="button-addtocart" onclick="addToCart('Nước Tẩy Trang Thảo Mộc Làm Sạch Sâu Belif Cleansing', 'https://img.upanh.tv/2024/11/21/fbc518e4-2c9a-4b1e-8656-53ce09313756.webp', 880000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -952,7 +949,7 @@
                             <h5 class="product-title">BANILA CO</h5>
                             <p class="product-description">Nước Tẩy Trang Bí Đao Cocoon Winter Melon Micellar</p> 
                             <p class="product-price">295.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Nước Tẩy Trang Bí Đao Cocoon Winter Melon Micellar', 'https://img.upanh.tv/2024/11/21/f3223a21-e787-4945-8f9a-699070b32706.webp', 295000)">
+                            <button class="button-addtocart" onclick="addToCart('Nước Tẩy Trang Bí Đao Cocoon Winter Melon Micellar', 'https://img.upanh.tv/2024/11/21/f3223a21-e787-4945-8f9a-699070b32706.webp', 295000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -1022,32 +1019,34 @@
 					<p>Chi nhánh 2: 290 Phạm Ngũ Lão, Phú Hội, TP. Huế</p>
 				</div>
 			</div>
-			<div class="col-md-6">
-				<h5 class="text-center">PHƯƠNG THỨC THANH TOÁN</h5>
-				<div class="text-center">
-					<div class="container text-center mt-3">
-						<div class="row justify-content-center mt-4">
-							<div class="col-md-12 d-flex justify-content-center payment-container">
-								<a href="https://www.visa.com.vn/vi_VN/pay-with-visa/featured-technologies/mobile-payments.html" class="payment-icon">
-									<img src="https://img.upanh.tv/2024/10/30/VISA-Logo-1976.png" alt="Visa Payment" class="img-fluid" style="max-width: 90px;">
-								</a>
-								<a href="https://developers.momo.vn/v3/vi/docs/payment/guides/payment-with-aio/" class="payment-icon">
-									<img src="https://img.upanh.tv/2024/10/30/mom.jpg" alt="MoMo Payment" class="img-fluid">
-								</a>
-								<a href="https://vivnpay.vn/blog/vnpayqr-vi-vnpay" target="_blank" class="payment-icon">
-									<img src="https://img.upanh.tv/2024/10/30/vnpay.png" alt="VNPay Payment" class="img-fluid">
-								</a>
-								<a href="https://zalopay.vn/" target="_blank" class="payment-icon">
-									<img src="https://img.upanh.tv/2024/10/30/Logo-ZaloPay-Square.jpg" alt="ZaloPay Payment" class="img-fluid">
-								</a>
-								<a href="https://ghn.vn/" target="_blank" class="payment-icon" style="margin-top: -12px">
-									<img src="https://img.upanh.tv/2024/10/30/Logo-GHN.png" alt="GHN" class="img-fluid" style="max-width: 140px;">
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>			
+			<div class="row">
+                <div class="col-md-6">
+                    <h5 class="text-center">PHƯƠNG THỨC THANH TOÁN</h5>
+                    <div class="text-center">
+                        <div class="container text-center mt-3">
+                            <div class="justify-content-center mt-4">
+                                <div class="d-flex justify-content-center payment-container">
+                                    <a href="https://www.visa.com.vn/vi_VN/pay-with-visa/featured-technologies/mobile-payments.html" class="payment-icon">
+                                        <img src="https://img.upanh.tv/2024/10/30/VISA-Logo-1976.png" alt="Visa Payment" class="img-fluid" style="max-width: 80px;">
+                                    </a>
+                                    <a href="https://developers.momo.vn/v3/vi/docs/payment/guides/payment-with-aio/" class="payment-icon">
+                                        <img src="https://img.upanh.tv/2024/10/30/mom.jpg" alt="MoMo Payment" class="img-fluid"  style="width: 40px;">
+                                    </a>
+                                    <a href="https://vivnpay.vn/blog/vnpayqr-vi-vnpay" target="_blank" class="payment-icon">
+                                        <img src="https://img.upanh.tv/2024/10/30/vnpay.png" alt="VNPay Payment" class="img-fluid"  style="width: 40px;">
+                                    </a>
+                                    <a href="https://zalopay.vn/" target="_blank" class="payment-icon">
+                                        <img src="https://img.upanh.tv/2024/10/30/Logo-ZaloPay-Square.jpg" alt="ZaloPay Payment" class="img-fluid" style="width: 40px;">
+                                    </a>
+                                    <a href="https://ghn.vn/" target="_blank" class="payment-icon" style="margin-top: -12px">
+                                        <img src="https://img.upanh.tv/2024/11/26/Logo-GHN-Orange.webp?fbclid=IwY2xjawGydJdleHRuA2FlbQIxMAABHVDd1i3r_hU6MLHztyuS8qY2-bJ5YRG9bJD3_c4ZtwsQuZ4edsM575VIXA_aem_Cr4WcULiY3KHxxwzT3CofA" alt="GHN" class="img-fluid">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>	
+            </div>			
 			<div class="row">
 				<div class="text-center mt-4 border-top border-dark">
 					<p class="pt-4 pt-lg-5">© Bản quyền thuộc công ty G.N.T COSMETICS | Cung cấp bởi Sapo</p>
@@ -1055,7 +1054,7 @@
 			</div>
 		</div>
 	</section> <!--footer-->
-    <script src="./cart.js"></script>
+<script src="./js/main.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
 <script>
@@ -1073,5 +1072,6 @@
     });
 }
 </script>
+<script src="./script2.js"></script>
 </body>
 </html>

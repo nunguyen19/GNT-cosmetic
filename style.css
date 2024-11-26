@@ -61,12 +61,12 @@ body, html {
         }
     }
 /* phonecontainer, login container */
-.phone-container, .login-container, .cart-container {
+.phone-container, .login-container {
     margin-top: 30px;
     margin-left: 0px;
     text-align: center;
 }
-.phone-container i, .login-container i, .cart-container i {
+.phone-container i, .login-container i {
     color: rgb(213, 153, 158);
     font-size: 38px;
     transform: rotateY(180deg);

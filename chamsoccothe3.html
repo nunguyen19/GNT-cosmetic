@@ -67,12 +67,12 @@
             }
         }
     /* phonecontainer, login container */
-    .phone-container, .login-container, .cart-container {
+    .phone-container, .login-container {
         margin-top: 30px;
         margin-left: 0px;
         text-align: center;
     }
-    .phone-container i, .login-container i, .cart-container i {
+    .phone-container i, .login-container i {
         color: rgb(213, 153, 158);
         font-size: 38px;
         transform: rotateY(180deg);
@@ -300,23 +300,6 @@
       border-radius: 5px;
       display: inline-block;
     }
-    .add-to-cart {
-      background-color: #f2b6b6;
-      width: auto;
-      color: #333;
-	  margin-left: 15px;
-	  margin-right: 15px;
-      padding: 5px;
-      border-radius: 10px;
-      text-align: center;
-      display: block;
-      text-decoration: none;
-
-    }
-    .add-to-cart:hover {
-      background-color: #e30000;
-      color: white;
-    }
     .pagination {
         display: flex;
         justify-content: center;
@@ -355,11 +338,8 @@
         border: none;
         font-size: 18px;
     }
-    .button-addtocart {
-        border: none;
-        background-color: #fff5f5;
-    }
 </style>
+<link rel="stylesheet" href="./cart.css">
 </head>
 <body>
     <div class="container-fluid">
@@ -386,7 +366,7 @@
                 </form>
             </div>
             <!-- contact -->
-            <div class="col-md-2 col-1 d-none d-sm-block">
+            <div class="col-md-2 col-1 d-none d-md-block">
                 <div class="phone-container">
                     <i class="fa fa-phone"></i>
                     <div class="d-none d-xl-inline-block">
@@ -396,7 +376,7 @@
                 </div>
             </div>
             <!-- register/login -->
-            <div class="col-md-2 col-1 d-none d-sm-block">
+            <div class="col-md-2 col-1 d-none d-md-block">
                 <div class="login-container">
                     <a href="./register.html"><i class="fa fa-user"></i></a>
                     <div class="d-none d-xl-inline-block">
@@ -406,18 +386,38 @@
                 </div>
             </div>
             <!-- cart -->
-            <div class="col-md-2 col-1">
-				<a href="./cart.html"  style="text-decoration: none;">
-					<div class="cart-container">
-						<i class="fa fa-cart-plus"></i>
-						<p class="d-none d-xl-inline-block text-black">Giỏ hàng</p>
-					</div> 
-				</a>
-			</div>
+            <div class="col-md-2 col-1 py-3">
+                <button id="cartButton" class="btn btn-outline-dark">
+                    <div class="cart-container">
+                        <i class="fa fa-cart-plus mt-2"></i>
+                        <span id="cartCount" class="badge bg-danger position-absolute translate-middle me-5">0</span>
+                        <p class="d-none d-lg-block text-black ms-2 pt-4">Giỏ hàng</p>
+                    </div> 
+                </button>
+                <div id="cartModal" class="modal fade bgmodal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Giỏ hàng của bạn</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="cartItems"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="w-100 d-flex justify-content-between">
+                                <span class="cart-total">Tổng tiền: 0₫</span>
+                                <button id="checkoutButton">Thanh toán</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row">
             <!-- navigation bar -->
-            <nav class="navbar navbar-expand-sm">
+            <nav class="navbar navbar-expand-md">
                 <button class="navbar-toggler ms-5 border-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
                     <span class="text-dark d-none d-xxl-inline">Danh mục sản phẩm</span>
@@ -448,11 +448,11 @@
 							<a class="nav-link" href="./home.html#categories7">TIN TỨC & LÀM ĐẸP</a>
 						</li> 
                         <!-- mở rộng contact - login -->
-                        <li class="nav-item phone-cont d-sm-none d-block">
+                        <li class="nav-item phone-cont d-md-none d-block">
                             <i class="fa fa-phone"></i>
                             <p>+1 6506671441</p>
                         </li>
-                        <li class="nav-item login-cont d-sm-none d-block">
+                        <li class="nav-item login-cont d-md-none d-block">
                             <i class="fa fa-user"></i>
                             <div class="d-inline">
                                 <a href="./register.html">Đăng Ký
@@ -551,17 +551,14 @@
             <div class="sort-section d-none d-xl-inline">
                 <ul>
                     <li><a href="#" class="fw-bold">Sắp xếp: </a></li>
-                    <li><a href="#">Tên A > Z</a></li>
-                    <li><a href="#">Tên Z > A</a></li>
-                    <li><a href="#">Giá tăng dần</a></li>
-                    <li><a href="#">Giá giảm dần</a></li>
+                    <li><a href="#" id="sortPriceAsc">Giá tăng dần</a></li>
+                    <!-- <li><a href="./CSDpage1Giamdan.html">Giá giảm dần</a></li> -->
+                    <li><a href="#" id="sortPriceDesc">Giá giảm dần</a></li>
                 </ul>
             </div>
             <div class="sort-dropdown nav-item dropdown d-xl-none d-inline">
                 <a class="nav-link dropdown-toggle sort-button" data-bs-toggle="dropdown" href="#">Sắp xếp: </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Tên A > Z</a></li>
-                    <li><a class="dropdown-item" href="#">Tên Z > A</a></li>
                     <li><a class="dropdown-item" href="#">Giá tăng dần</a></li>
                     <li><a class="dropdown-item" href="#">Giá giảm dần</a></li>
                 </ul>
@@ -581,11 +578,13 @@
                             <h5 class="product-title">WEILAIYA</h5>
                             <p class="product-description">Dầu Xả Gừng Trắng Kích Thích Mọc Tóc Weilaiya Ginger</p>
                             <p class="product-price">350.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Dầu Xả Gừng Trắng Kích Thích Mọc Tóc Weilaiya Ginger', 'https://image.hsv-tech.io/600x600/bbx/products/dcda7db8-2ab9-4053-97e2-a157c129ed1b.webp', 350000)">
+                            <button class="button-addtocart" onclick="addToCart('Dầu Xả Gừng Trắng Kích Thích Mọc Tóc Weilaiya Ginger', 'https://image.hsv-tech.io/600x600/bbx/products/dcda7db8-2ab9-4053-97e2-a157c129ed1b.webp', 350000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
+                            <p class="mt-2">★★★★★</p>
                         </div>
+                        
                     </div>
                     <!-- sản phẩm 2 -->
                     <div class="col-md-6 col-lg-3 mt-sm-5 mt-lg-3">
@@ -598,7 +597,7 @@
                             <h5 class="product-title">WEILAIYA</h5>
                             <p class="product-description">Sữa Tắm Trắng Da Cánh Hoa Hồng Damask Weilaiya</p>
                             <p class="product-price">488.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Sữa Tắm Trắng Da Cánh Hoa Hồng Damask Weilaiya', 'https://image.hsv-tech.io/987x0/bbx/products/108979e5-c573-420d-8cc5-ecf8716e5c00.webp', 488000)">
+                            <button class="button-addtocart" onclick="addToCart('Sữa Tắm Trắng Da Cánh Hoa Hồng Damask Weilaiya', 'https://image.hsv-tech.io/987x0/bbx/products/108979e5-c573-420d-8cc5-ecf8716e5c00.webp', 488000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -617,7 +616,7 @@
                             <h5 class="product-title">GIRLZ ONLY</h5>
                             <p class="product-description">Dầu Gội Khô Cho Da Đầu Nhạy Cảm Girlz Only</p>
                             <p class="product-price">175.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Dầu Gội Khô Cho Da Đầu Nhạy Cảm Girlz Only', 'https://image.hsv-tech.io/600x600/bbx/products/d0dcf92d-c416-45df-af91-7789a31308fe.webp', 175000)">
+                            <button class="button-addtocart" onclick="addToCart('Dầu Gội Khô Cho Da Đầu Nhạy Cảm Girlz Only', 'https://image.hsv-tech.io/600x600/bbx/products/d0dcf92d-c416-45df-af91-7789a31308fe.webp', 175000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -636,7 +635,7 @@
                             <h5 class="product-title">UNO</h5>
                             <p class="product-description">Sáp Tạo Kiểu Tóc Bóng Mượt Lịch Lãm Uno Wet Effector</p>
                             <p class="product-price">149.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Sáp Tạo Kiểu Tóc Bóng Mượt Lịch Lãm Uno Wet Effector', 'https://image.hsv-tech.io/600x600/bbx/common/decdf8ad-48b6-409a-a99b-5330ef416c96.webp', 149000)">
+                            <button class="button-addtocart" onclick="addToCart('Sáp Tạo Kiểu Tóc Bóng Mượt Lịch Lãm Uno Wet Effector', 'https://image.hsv-tech.io/600x600/bbx/common/decdf8ad-48b6-409a-a99b-5330ef416c96.webp', 149000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -654,7 +653,7 @@
                             <h5 class="product-title">COCOON</h5>
                             <p class="product-description">Tẩy Da Chết Cơ Thể Đường Thốt Nốt Cocoon</p> 
                             <p class="product-price">165.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Tẩy Da Chết Cơ Thể Đường Thốt Nốt Cocoon', 'https://image.hsv-tech.io/600x600/bbx/common/4846f6ef-65a8-4085-b58f-c31db0783ec7.webp', 165000)">
+                            <button class="button-addtocart" onclick="addToCart('Tẩy Da Chết Cơ Thể Đường Thốt Nốt Cocoon', 'https://image.hsv-tech.io/600x600/bbx/common/4846f6ef-65a8-4085-b58f-c31db0783ec7.webp', 165000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -672,7 +671,7 @@
                             <h5 class="product-title">HAPPYSKIN</h5>
                             <p class="product-description">Xịt Khử Mùi Vùng Kín Và Toàn Thân Happyskin Intimate</p> 
                             <p class="product-price">199.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Xịt Khử Mùi Vùng Kín Và Toàn Thân Happyskin Intimate', 'https://image.hsv-tech.io/600x600/bbx/common/e67d098e-eef5-4bde-a7d4-897ff3b0236e.webp', 199000)">
+                            <button class="button-addtocart" onclick="addToCart('Xịt Khử Mùi Vùng Kín Và Toàn Thân Happyskin Intimate', 'https://image.hsv-tech.io/600x600/bbx/common/e67d098e-eef5-4bde-a7d4-897ff3b0236e.webp', 199000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -690,7 +689,7 @@
                             <h5 class="product-title">KISS MY BODY</h5>
                             <p class="product-description">Sữa Dưỡng Thể Kiss My Body Chống Nắng</p> 
                             <p class="product-price">129.350<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Sữa Dưỡng Thể Kiss My Body Chống Nắng', 'https://image.hsv-tech.io/600x600/bbx/common/2a607c37-b55c-4fd3-a025-3fd3b92734fe.webp', 129350)">
+                            <button class="button-addtocart" onclick="addToCart('Sữa Dưỡng Thể Kiss My Body Chống Nắng', 'https://image.hsv-tech.io/600x600/bbx/common/2a607c37-b55c-4fd3-a025-3fd3b92734fe.webp', 129350)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -708,7 +707,7 @@
                             <h5 class="product-title">GIRLZ ONLY</h5>
                             <p class="product-description">Dầu Gội Khô Hương Hoa Quyến Rũ Girlz Only Party Nights</p> 
                             <p class="product-price">175.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Dầu Gội Khô Hương Hoa Quyến Rũ Girlz Only Party Nights', 'https://image.hsv-tech.io/600x600/bbx/products/85c085c6-9025-4e5a-9702-aeaefb29958c.webp', 175000)">
+                            <button class="button-addtocart" onclick="addToCart('Dầu Gội Khô Hương Hoa Quyến Rũ Girlz Only Party Nights', 'https://image.hsv-tech.io/600x600/bbx/products/85c085c6-9025-4e5a-9702-aeaefb29958c.webp', 175000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -726,7 +725,7 @@
                             <h5 class="product-title">L'OREAL PARIS</h5>
                             <p class="product-description">Dầu Xả Dành Cho Tóc Nhuộm LOréal Paris Elseve 7 Weeks</p> 
                             <p class="product-price">138.999<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Dầu Xả Dành Cho Tóc Nhuộm LOréal Paris Elseve 7 Weeks', 'https://image.hsv-tech.io/600x600/bbx/common/b7b1c006-7fb4-4d2d-b565-c9ddd5c6eeb7.webp', 138999)">
+                            <button class="button-addtocart" onclick="addToCart('Dầu Xả Dành Cho Tóc Nhuộm LOréal Paris Elseve 7 Weeks', 'https://image.hsv-tech.io/600x600/bbx/common/b7b1c006-7fb4-4d2d-b565-c9ddd5c6eeb7.webp', 138999)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -744,7 +743,7 @@
                             <h5 class="product-title">HASI HABU</h5>
                             <p class="product-description">Kem Dưỡng Ẩm Da Tay Và Móng Hasi Habu Garden</p> 
                             <p class="product-price">60.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Kem Dưỡng Ẩm Da Tay Và Móng Hasi Habu Garden', 'https://image.hsv-tech.io/600x600/bbx/common/a3066b5c-8ba2-46f6-969f-b51b6381b046.webp', 60000)">
+                            <button class="button-addtocart" onclick="addToCart('Kem Dưỡng Ẩm Da Tay Và Móng Hasi Habu Garden', 'https://image.hsv-tech.io/600x600/bbx/common/a3066b5c-8ba2-46f6-969f-b51b6381b046.webp', 60000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -755,14 +754,14 @@
                     <!-- sản phẩm 11 -->
                     <div class="col-md-6 col-lg-3 mt-sm-5 mt-lg-3">
                         <div class="product-card">
-                            <img src="https://image.hsv-tech.io/600x600/bbx/common/3bb29575-9f8e-48eb-a709-f312c8976c7b.webp" class="product-img" alt="INNISFREE">
+                            <img src="https://img.upanh.tv/2024/11/25/srm-greentea5cae788ea5fb0a85.jpg" class="product-img" alt="INNISFREE">
                             <button type="button" class="favorite-button">
                                 <i class="fa fa-heart"></i>
                             </button>
                             <h5 class="product-title">INNISFREE</h5>
                             <p class="product-description">Sữa Rửa Mặt Dịu Nhẹ Innisfree Green Tea Foam Cleanser</p> 
                             <p class="product-price">229.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Sữa Rửa Mặt Dịu Nhẹ Innisfree Green Tea Foam Cleanser', 'https://image.hsv-tech.io/600x600/bbx/common/3bb29575-9f8e-48eb-a709-f312c8976c7b.webp', 229000)">
+                            <button class="button-addtocart" onclick="addToCart('Sữa Rửa Mặt Dịu Nhẹ Innisfree Green Tea Foam Cleanser', 'https://img.upanh.tv/2024/11/25/srm-greentea5cae788ea5fb0a85.jpg', 229000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -781,7 +780,7 @@
                             <h5 class="product-title">L'OREAL PARIS</h5>
                             <p class="product-description">Dầu Gội Phục Hồi Tóc L Oreal Paris Elseve Total Repair</p>
                             <p class="product-price">199.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Dầu Gội Phục Hồi Tóc L Oreal Paris Elseve Total Repair', 'https://image.hsv-tech.io/600x600/bbx/common/456bba3a-bf8e-4b77-a9e4-e2c794f8a6e8.webp', 199000)">
+                            <button class="button-addtocart" onclick="addToCart('Dầu Gội Phục Hồi Tóc L Oreal Paris Elseve Total Repair', 'https://image.hsv-tech.io/600x600/bbx/common/456bba3a-bf8e-4b77-a9e4-e2c794f8a6e8.webp', 199000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -799,7 +798,7 @@
                             <h5 class="product-title">VACOSI</h5>
                             <p class="product-description">Lược Gỡ Rối Size Bỏ Túi Vacosi Travel Detangle Hairbrush</p>
                             <p class="product-price">55.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Lược Gỡ Rối Size Bỏ Túi Vacosi Travel Detangle Hairbrush', 'https://image.hsv-tech.io/600x600/bbx/common/4ade3d30-2303-40cb-8921-eb7ed24c6415.webp', 55000)">
+                            <button class="button-addtocart" onclick="addToCart('Lược Gỡ Rối Size Bỏ Túi Vacosi Travel Detangle Hairbrush', 'https://image.hsv-tech.io/600x600/bbx/common/4ade3d30-2303-40cb-8921-eb7ed24c6415.webp', 55000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -817,7 +816,7 @@
                             <h5 class="product-title">UNO</h5>
                             <p class="product-description">Sáp Tạo Kiểu Tóc Giữ Nếp Tự Nhiên Uno Hybrid Hard</p>
                             <p class="product-price">149.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Sáp Tạo Kiểu Tóc Giữ Nếp Tự Nhiên Uno Hybrid Hard', 'https://image.hsv-tech.io/600x600/bbx/common/31f5f4e7-86e6-4004-94be-61570a47e870.webp', 149000)">
+                            <button class="button-addtocart" onclick="addToCart('Sáp Tạo Kiểu Tóc Giữ Nếp Tự Nhiên Uno Hybrid Hard', 'https://image.hsv-tech.io/600x600/bbx/common/31f5f4e7-86e6-4004-94be-61570a47e870.webp', 149000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -835,7 +834,7 @@
                             <h5 class="product-title">ON THE BODY</h5>
                             <p class="product-description">Sữa Tắm Hạt On The Body Veilment Natural Spa</p>
                             <p class="product-price">380.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Sữa Tắm Hạt On The Body Veilment Natural Spa', 'https://image.hsv-tech.io/600x600/bbx/common/74c9c315-fdff-442c-b18f-8e48bc327bba.webp', 380000)">
+                            <button class="button-addtocart" onclick="addToCart('Sữa Tắm Hạt On The Body Veilment Natural Spa', 'https://image.hsv-tech.io/600x600/bbx/common/74c9c315-fdff-442c-b18f-8e48bc327bba.webp', 380000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -853,7 +852,7 @@
                             <h5 class="product-title">BEYOND</h5>
                             <p class="product-description">Sữa Dưỡng Thể Cấp Ẩm, Làm Dịu Da Beyond Deep</p>
                             <p class="product-price">765.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Sữa Dưỡng Thể Cấp Ẩm, Làm Dịu Da Beyond Deep', 'https://image.hsv-tech.io/600x600/bbx/common/a7ea6265-cb00-49c1-b4c2-922a9c5091cc.webp', 765000)">
+                            <button class="button-addtocart" onclick="addToCart('Sữa Dưỡng Thể Cấp Ẩm, Làm Dịu Da Beyond Deep', 'https://image.hsv-tech.io/600x600/bbx/common/a7ea6265-cb00-49c1-b4c2-922a9c5091cc.webp', 765000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -871,7 +870,7 @@
                             <h5 class="product-title">OLD SPICE</h5>
                             <p class="product-description">Sáp Khử Mùi Old Spice Deo Stick 85g</p>
                             <p class="product-price">141.950<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Sáp Khử Mùi Old Spice Deo Stick 85g', 'https://image.hsv-tech.io/600x600/bbx/common/a9c64649-2b0c-44d5-8c44-63f924dd7cce.webp', 141950)">
+                            <button class="button-addtocart" onclick="addToCart('Sáp Khử Mùi Old Spice Deo Stick 85g', 'https://image.hsv-tech.io/600x600/bbx/common/a9c64649-2b0c-44d5-8c44-63f924dd7cce.webp', 141950)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -890,7 +889,7 @@
                             <h5 class="product-title">VACOSI</h5>
                             <p class="product-description">Lược Gỡ Rối Cho Tóc Khô Tóc Yếu Vacosi Detangling</p>
                             <p class="product-price">65.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Lược Gỡ Rối Cho Tóc Khô Tóc Yếu Vacosi Detangling', 'https://image.hsv-tech.io/600x600/bbx/common/bc293c4f-a91c-4069-849e-306efc6f1ee9.webp', 65000)">
+                            <button class="button-addtocart" onclick="addToCart('Lược Gỡ Rối Cho Tóc Khô Tóc Yếu Vacosi Detangling', 'https://image.hsv-tech.io/600x600/bbx/common/bc293c4f-a91c-4069-849e-306efc6f1ee9.webp', 65000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -909,7 +908,7 @@
                             <h5 class="product-title">YVES ROCHER</h5>
                             <p class="product-description">Sữa Tắm Yves Rocher Cấp Ẩm Cho Da Nature Bath</p>
                             <p class="product-price">290.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Sữa Tắm Yves Rocher Cấp Ẩm Cho Da Nature Bath', 'https://image.hsv-tech.io/600x600/bbx/common/0ff12423-683c-4b35-903a-bd45c86f8904.webp', 290000)">
+                            <button class="button-addtocart" onclick="addToCart('Sữa Tắm Yves Rocher Cấp Ẩm Cho Da Nature Bath', 'https://image.hsv-tech.io/600x600/bbx/common/0ff12423-683c-4b35-903a-bd45c86f8904.webp', 290000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -928,7 +927,7 @@
                             <h5 class="product-title">YVES ROCHER</h5>
                             <p class="product-description">Dầu Gội Yves Rocher Giảm Rụng Tóc Anti-Hair Loss</p>
                             <p class="product-price">360.000<sup>đ</sup></p>
-                            <button class="button-addtocart add-to-cart" onclick="addToCart('Dầu Gội Yves Rocher Giảm Rụng Tóc Anti-Hair Loss', 'https://image.hsv-tech.io/600x600/bbx/common/38f7cab8-9a53-4d9b-8458-c456ff10776e.webp', 360000)">
+                            <button class="button-addtocart" onclick="addToCart('Dầu Gội Yves Rocher Giảm Rụng Tóc Anti-Hair Loss', 'https://image.hsv-tech.io/600x600/bbx/common/38f7cab8-9a53-4d9b-8458-c456ff10776e.webp', 360000)">
                                 <i class="fa fa-cart-plus"></i>
                                 THÊM VÀO GIỎ HÀNG
                             </button>
@@ -998,32 +997,34 @@
 					<p>Chi nhánh 2: 290 Phạm Ngũ Lão, Phú Hội, TP. Huế</p>
 				</div>
 			</div>
-			<div class="col-md-6">
-				<h5 class="text-center">PHƯƠNG THỨC THANH TOÁN</h5>
-				<div class="text-center">
-					<div class="container text-center mt-3">
-						<div class="row justify-content-center mt-4">
-							<div class="col-md-12 d-flex justify-content-center payment-container">
-								<a href="https://www.visa.com.vn/vi_VN/pay-with-visa/featured-technologies/mobile-payments.html" class="payment-icon">
-									<img src="https://img.upanh.tv/2024/10/30/VISA-Logo-1976.png" alt="Visa Payment" class="img-fluid" style="max-width: 90px;">
-								</a>
-								<a href="https://developers.momo.vn/v3/vi/docs/payment/guides/payment-with-aio/" class="payment-icon">
-									<img src="https://img.upanh.tv/2024/10/30/mom.jpg" alt="MoMo Payment" class="img-fluid">
-								</a>
-								<a href="https://vivnpay.vn/blog/vnpayqr-vi-vnpay" target="_blank" class="payment-icon">
-									<img src="https://img.upanh.tv/2024/10/30/vnpay.png" alt="VNPay Payment" class="img-fluid">
-								</a>
-								<a href="https://zalopay.vn/" target="_blank" class="payment-icon">
-									<img src="https://img.upanh.tv/2024/10/30/Logo-ZaloPay-Square.jpg" alt="ZaloPay Payment" class="img-fluid">
-								</a>
-								<a href="https://ghn.vn/" target="_blank" class="payment-icon" style="margin-top: -12px">
-									<img src="https://img.upanh.tv/2024/10/30/Logo-GHN.png" alt="GHN" class="img-fluid" style="max-width: 140px;">
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>			
+			<div class="row">
+                <div class="col-md-6">
+                    <h5 class="text-center">PHƯƠNG THỨC THANH TOÁN</h5>
+                    <div class="text-center">
+                        <div class="container text-center mt-3">
+                            <div class="justify-content-center mt-4">
+                                <div class="d-flex justify-content-center payment-container">
+                                    <a href="https://www.visa.com.vn/vi_VN/pay-with-visa/featured-technologies/mobile-payments.html" class="payment-icon">
+                                        <img src="https://img.upanh.tv/2024/10/30/VISA-Logo-1976.png" alt="Visa Payment" class="img-fluid" style="max-width: 80px;">
+                                    </a>
+                                    <a href="https://developers.momo.vn/v3/vi/docs/payment/guides/payment-with-aio/" class="payment-icon">
+                                        <img src="https://img.upanh.tv/2024/10/30/mom.jpg" alt="MoMo Payment" class="img-fluid"  style="width: 40px;">
+                                    </a>
+                                    <a href="https://vivnpay.vn/blog/vnpayqr-vi-vnpay" target="_blank" class="payment-icon">
+                                        <img src="https://img.upanh.tv/2024/10/30/vnpay.png" alt="VNPay Payment" class="img-fluid"  style="width: 40px;">
+                                    </a>
+                                    <a href="https://zalopay.vn/" target="_blank" class="payment-icon">
+                                        <img src="https://img.upanh.tv/2024/10/30/Logo-ZaloPay-Square.jpg" alt="ZaloPay Payment" class="img-fluid" style="width: 40px;">
+                                    </a>
+                                    <a href="https://ghn.vn/" target="_blank" class="payment-icon" style="margin-top: -12px">
+                                        <img src="https://img.upanh.tv/2024/11/26/Logo-GHN-Orange.webp?fbclid=IwY2xjawGydJdleHRuA2FlbQIxMAABHVDd1i3r_hU6MLHztyuS8qY2-bJ5YRG9bJD3_c4ZtwsQuZ4edsM575VIXA_aem_Cr4WcULiY3KHxxwzT3CofA" alt="GHN" class="img-fluid">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>	
+            </div>		
 			<div class="row">
 				<div class="text-center mt-4 border-top border-dark">
 					<p class="pt-4 pt-lg-5">© Bản quyền thuộc công ty G.N.T COSMETICS | Cung cấp bởi Sapo</p>
@@ -1031,7 +1032,7 @@
 			</div>
 		</div>
 	</section> <!--footer-->
-    <script src="./cart.js"></script>
+<script src="./js/main.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
 <script>
@@ -1049,5 +1050,6 @@
     });
 }
 </script>
+<script src="./script2.js"></script>
 </body>
 </html>

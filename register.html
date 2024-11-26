@@ -65,12 +65,12 @@
                 color: transparent;
             }
         }
-    .phone-container, .login-container, .cart-container {
+    .phone-container, .login-container {
         margin-top: 30px;
         margin-left: 0px;
         text-align: center;
     }
-    .phone-container i, .login-container i, .cart-container i {
+    .phone-container i, .login-container i {
         color: rgb(213, 153, 158);
         font-size: 38px;
         transform: rotateY(180deg);
@@ -132,6 +132,7 @@
     form:has(input:valid) #register-button:disabled {
         pointer-events: none;}
 </style>
+<link rel="stylesheet" href="./cart.css">
 </head>
 <body>
     <div class="container-fluid">
@@ -158,8 +159,7 @@
                     </button>
                 </form>
             </div>
-            <!-- contact -->
-            <div class="col-md-2 col-1 d-none d-sm-block">
+            <div class="col-md-2 col-1 d-none d-md-block">
                 <div class="phone-container">
                     <i class="fa fa-phone"></i>
                     <div class="d-none d-xl-inline-block">
@@ -169,9 +169,9 @@
                 </div>
             </div>
             <!-- register/login -->
-            <div class="col-md-2 col-1 d-none d-sm-block">
+            <div class="col-md-2 col-1 d-none d-md-block">
                 <div class="login-container">
-                    <a href="./login.html"><i class="fa fa-user"></i></a>
+                    <a href="./register.html"><i class="fa fa-user"></i></a>
                     <div class="d-none d-xl-inline-block">
                         <a href="./register.html">Đăng Ký</a>
                         <a href="./login.html" class="d-block">Đăng Nhập</a>
@@ -179,18 +179,38 @@
                 </div>
             </div>
             <!-- cart -->
-            <div class="col-md-2 col-1">
-				<a href="./cart.html"  style="text-decoration: none;">
-					<div class="cart-container">
-						<i class="fa fa-cart-plus"></i>
-						<p class="d-none d-xl-inline-block text-black">Giỏ hàng</p>
-					</div> 
-				</a>
-			</div>
+            <div class="col-md-2 col-1 py-3">
+                <button id="cartButton" class="btn btn-outline-dark">
+                    <div class="cart-container">
+                        <i class="fa fa-cart-plus mt-2"></i>
+                        <span id="cartCount" class="badge bg-danger position-absolute translate-middle me-5">0</span>
+                        <p class="d-none d-lg-block text-black ms-2 pt-4">Giỏ hàng</p>
+                    </div> 
+                </button>
+                <div id="cartModal" class="modal fade bgmodal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Giỏ hàng của bạn</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="cartItems"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="w-100 d-flex justify-content-between">
+                                <span class="cart-total">Tổng tiền: 0₫</span>
+                                <button id="checkoutButton">Thanh toán</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row">
             <!-- navigation bar -->
-            <nav class="navbar navbar-expand-sm">
+            <nav class="navbar navbar-expand-md">
                 <button class="navbar-toggler ms-5 border-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
                     <span class="text-dark d-none d-xxl-inline">Danh mục sản phẩm</span>
@@ -221,11 +241,11 @@
 							<a class="nav-link" href="./home.html#categories7">TIN TỨC & LÀM ĐẸP</a>
 						</li> 
                         <!-- mở rộng contact - login -->
-                        <li class="nav-item phone-cont d-sm-none d-block">
+                        <li class="nav-item phone-cont d-md-none d-block">
                             <i class="fa fa-phone"></i>
                             <p>+1 6506671441</p>
                         </li>
-                        <li class="nav-item login-cont d-sm-none d-block">
+                        <li class="nav-item login-cont d-md-none d-block">
                             <i class="fa fa-user"></i>
                             <div class="d-inline">
                                 <a href="./register.html">Đăng Ký
@@ -262,5 +282,6 @@
     </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+<script src="./script2.js"></script>
 </body>
 </html>

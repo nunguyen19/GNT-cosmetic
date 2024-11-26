@@ -32,50 +32,48 @@ setInterval(function () {
 // Lấy tất cả các checkbox và sản phẩm
 const checkboxes = document.querySelectorAll('.filter-option input[type="checkbox"]');
 const products = document.querySelectorAll('.product-card');
-
 // Hàm lọc sản phẩm
 function filterProducts() {
-    // Lấy danh sách giá được chọn
-    const selectedRanges = [];
+    const selectedRanges = []; // Lưu trữ khoảng giá lọc được chọn
     checkboxes.forEach((checkbox) => {
         if (checkbox.checked) {
             switch (checkbox.id) {
-                case 'price1':
-                    selectedRanges.push([0, 100000]);
-                    break;
-                case 'price2':
-                    selectedRanges.push([100000, 200000]);
-                    break;
-                case 'price3':
-                    selectedRanges.push([200000, 300000]);
-                    break;
-                case 'price4':
-                    selectedRanges.push([300000, 500000]);
-                    break;
-                case 'price5':
-                    selectedRanges.push([500000, 1000000]);
-                    break;
-                case 'price6':
-                    selectedRanges.push([1000000, Infinity]);
-                    break;
+                case 'price1': selectedRanges.push([0, 100000]); break;
+                case 'price2': selectedRanges.push([100000, 200000]); break;
+                case 'price3': selectedRanges.push([200000, 300000]); break;
+                case 'price4': selectedRanges.push([300000, 500000]); break;
+                case 'price5': selectedRanges.push([500000, 1000000]); break;
+                case 'price6': selectedRanges.push([1000000, Infinity]); break;
             }
         }
     });
 
-    // Lọc sản phẩm dựa trên giá
+    // Lọc sản phẩm dựa trên khoảng giá đã chọn
     products.forEach((product) => {
-        const productPrice = parseInt(product.getAttribute('data-price')); // Lấy giá từ thuộc tính data-price
+        const productPrice = parseInt(product.getAttribute('data-price'));
         const isVisible = selectedRanges.some(
             (range) => productPrice >= range[0] && productPrice <= range[1]
         );
 
-        // Hiển thị hoặc ẩn sản phẩm
-        product.style.display = isVisible ? 'block' : 'none';
+        // Ẩn hoặc xóa sản phẩm không phù hợp
+        if (!isVisible) {
+            product.style.display = 'none';
+        } else {
+            product.style.display = 'block'; // Hiển thị sản phẩm
+        }
     });
 
-    // Sau khi lọc, xếp lại các sản phẩm theo thứ tự hàng ngang
+    // Xóa thẻ <div class="col-md-8"> sau khi lọc
+    const colMd8Div = document.querySelector('.col-md-8');
+    if (colMd8Div) {
+        colMd8Div.remove(); // Xóa thẻ div có class "col-md-8"
+    }
+
+    // Cập nhật lại danh sách sản phẩm sau khi lọc
     arrangeProducts();
 }
+
+
 
 // Lắng nghe sự kiện khi người dùng nhấn nút "Áp dụng"
 document.querySelector('.apply-button').addEventListener('click', filterProducts);
@@ -92,15 +90,20 @@ productCards.forEach(card => {
     }
 });
 
-// Hàm để xếp lại các sản phẩm theo hàng ngang
 function arrangeProducts() {
-    const container = document.querySelector(' .product-overview');
-    const visibleProducts = Array.from(products).filter-container(product => product.style.display === 'block');
-    
-    // Xếp lại các sản phẩm trong container
+    const container = document.querySelector('.product-overview');
+    const pagination = document.querySelector('.pagination'); // Lấy phần tử phân trang
+    const visibleProducts = Array.from(products).filter(product => product.style.display === 'block');
+
+    // Di chuyển các sản phẩm vào container
     visibleProducts.forEach(product => {
-        container.appendChild(product); // Di chuyển sản phẩm vào lại container
+        container.appendChild(product);
     });
+
+    // Đảm bảo pagination luôn nằm cuối
+    if (pagination) {
+        container.appendChild(pagination); // Đưa pagination xuống cuối
+    }
 }
 
 
@@ -123,3 +126,39 @@ document.querySelector(".apply-button").addEventListener("click", function () {
     }
   });
 });
+document.getElementById("sortPriceAsc").addEventListener("click", function () {
+    const sortedProducts = Array.from(products).sort((a, b) => {
+        const priceA = parseInt(a.getAttribute("data-price"));
+        const priceB = parseInt(b.getAttribute("data-price"));
+        return priceA - priceB; // Sort by price in ascending order
+    });
+
+    const container = document.querySelector(".product-overview");
+    // Clear the container
+    container.innerHTML = "";
+    
+    // Append the sorted products back to the container
+    sortedProducts.forEach(product => {
+        container.appendChild(product);
+    });
+}); 
+
+// Sorting by price in descending order
+document.getElementById("sortPriceDesc").addEventListener("click", function () {
+    const sortedProducts = Array.from(products).sort((a, b) => {
+        const priceA = parseInt(a.getAttribute("data-price"));
+        const priceB = parseInt(b.getAttribute("data-price"));
+        return priceB - priceA; // Sort by price in descending order
+    });
+
+    const container = document.querySelector(".product-overview");
+    // Clear the container
+    container.innerHTML = "";
+    
+    // Append the sorted products back to the container
+    sortedProducts.forEach(product => {
+        container.appendChild(product);
+    });
+});
+
+

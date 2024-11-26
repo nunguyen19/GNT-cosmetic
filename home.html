@@ -66,7 +66,7 @@
 				color: transparent;
 			}
 		}
-    .phone-container, .login-container, .cart-container {
+    .phone-container, .login-container {
         margin-top: 30px;
         margin-left: 0px;
         text-align: center;
@@ -83,7 +83,7 @@
     .phone-cont p, .login-cont p {
         display: inline-block;
     }
-    .phone-container i, .login-container i, .cart-container i {
+    .phone-container i, .login-container i {
         color: rgb(213, 153, 158);
         font-size: 38px;
         transform: rotateY(180deg);
@@ -132,26 +132,6 @@
       border-radius: 5px;
       display: inline-block;
     }
-    .add-to-cart {
-      background-color: #f2b6b6;
-      color: #333;
-	  margin-left: 20px;
-	  margin-right: 20px;
-      padding: 5px;
-      border-radius: 10px;
-      text-align: center;
-      display: block;
-      text-decoration: none;
-
-    }
-	.button-addtocart {
-        border: none;
-        background-color: #fff5f5;
-    }
-    .add-to-cart:hover {
-      background-color: #e30000;
-      color: white;
-    }
 	.container-product {
 		position: relative;
 		height: 550px;
@@ -192,6 +172,11 @@
 		border-radius: 5px; /* Bo góc cho hình ảnh */
 		height: auto;
 		object-fit: cover; /* Giữ tỷ lệ hình ảnh và cắt cho vừa khung */
+		cursor: pointer; /* Con trỏ dạng bàn tay */
+	}
+	.ant-image:hover {
+    transform: scale(0.9); /* Thu nhỏ hình ảnh xuống 90% */
+	transition: transform 0.3s ease; /* Hiệu ứng chuyển đổi mượt */
 	}
 	.hover-image {
 			transition: transform 0.4s ease; /* Smooth transition for zoom effect */
@@ -258,6 +243,7 @@
 		text-decoration: none;
 	}
   </style>
+  <link rel="stylesheet" href="./cart.css">
 </head>
 <body>
 	<!-- header -->
@@ -283,8 +269,7 @@
 					</button>
 				</form>
 			</div>
-			<!-- contact -->
-			<div class="col-md-2 col-1 d-none d-sm-block">
+			<div class="col-md-2 col-1 d-none d-md-block">
 				<div class="phone-container">
 					<i class="fa fa-phone"></i>
 					<div class="d-none d-xl-inline-block">
@@ -294,50 +279,43 @@
 				</div>
 			</div>
 			<!-- register/login -->
-			<div class="col-md-2 col-1 d-none d-sm-block">
-                <div class="login-container">
-                    <a href="./register.html"><i class="fa fa-user"></i></a>
-                    <div class="d-none d-xl-inline-block">
-                        <a href="./register.html">Đăng Ký</a>
-                        <a href="./login.html" class="d-block">Đăng Nhập</a>
-                    </div>
-                </div>
-            </div>
-			<!-- cart -->
-			<!-- <div class="col-md-2 col-1">
-				<a href="./cart.html"  style="text-decoration: none;">
-					<div class="cart-container">
-						<i class="fa fa-cart-plus"></i>
-						<p class="d-none d-xl-inline-block text-black">Giỏ hàng</p>
-					</div> 
-				</a>
-			</div> -->
-			<div class="col-md-2 col-1">
-				<div class="cart-wrapper">
-					<div class="cart-container" onclick="toggleCart()">
-						<i class="fa fa-cart-plus"></i>
-						<p class="d-none d-xl-inline-block text-black">Giỏ hàng</p>
-						<span class="cart-count" id="cart-count">0</span>
-					</div>
-					<div class="cart-dropdown" id="cart-dropdown">
-						<div class="cart-header">
-							<h5>Giỏ hàng của bạn</h5>
-						</div>
-						<div class="cart-items" id="cart-items">
-							<!-- Cart items will be inserted here -->
-						</div>
-						<div class="cart-footer">
-							<div class="cart-total">
-								Tổng tiền: <span id="cart-total">0</span><sup>đ</sup>
-							</div>
-							<a href="./cart.html" class="view-cart-btn">Xem giỏ hàng</a>
-						</div>
+			<div class="col-md-2 col-1 d-none d-md-block">
+				<div class="login-container">
+					<a href="./register.html"><i class="fa fa-user"></i></a>
+					<div class="d-none d-xl-inline-block">
+						<a href="./register.html">Đăng Ký</a>
+						<a href="./login.html" class="d-block">Đăng Nhập</a>
 					</div>
 				</div>
 			</div>
-			<!-- Thêm div thông báo -->
-			<div id="notification" class="notification">
-				Đã thêm sản phẩm vào giỏ hàng!
+			<!-- cart -->
+			<div class="col-md-2 col-1 py-3">
+				<button id="cartButton" class="btn btn-outline-dark">
+					<div class="cart-container">
+						<i class="fa fa-cart-plus mt-2"></i>
+						<span id="cartCount" class="badge bg-danger position-absolute translate-middle me-5">0</span>
+						<p class="d-none d-lg-block text-black ms-2 pt-4">Giỏ hàng</p>
+					</div> 
+				</button>
+				<div id="cartModal" class="modal fade bgmodal" tabindex="-1">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Giỏ hàng của bạn</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+							</div>
+							<div class="modal-body">
+								<div id="cartItems"></div>
+							</div>
+							<div class="modal-footer">
+								<div class="w-100 d-flex justify-content-between">
+								<span class="cart-total">Tổng tiền: 0₫</span>
+								<button id="checkoutButton">Thanh toán</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 			
 		</div>
@@ -345,7 +323,7 @@
 	<section class="mymainmenu">
 		<div class="row">
 			<!-- navigation bar -->
-			<nav class="navbar navbar-expand-sm">
+			<nav class="navbar navbar-expand-md">
 				<button class="navbar-toggler ms-5 border-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
 					<span class="navbar-toggler-icon"></span>
 					<span class="text-dark d-none d-xxl-inline">Danh mục sản phẩm</span>
@@ -376,11 +354,11 @@
 							<a class="nav-link" href="./home.html#categories7">TIN TỨC & LÀM ĐẸP</a>
 						</li> 
 						<!-- mở rộng contact - login -->
-						<li class="nav-item phone-cont d-sm-none d-block">
+						<li class="nav-item phone-cont d-md-none d-block">
 							<i class="fa fa-phone"></i>
 							<p>+1 6506671441</p>
 						</li>
-						<li class="nav-item login-cont d-sm-none d-block">
+						<li class="nav-item login-cont d-md-none d-block">
 							<i class="fa fa-user"></i>
 							<div class="d-inline">
 								<a href="./register.html">Đăng Ký
@@ -396,7 +374,7 @@
 	</section>
 	<!--menu-->
 	<section class="myslider">
-		<div class="row mt-4 mb-4">
+		<div class="row mb-4">
             <div class="col-12">
               <div id="demo" class="carousel slide" data-bs-ride="carousel">
       
@@ -474,11 +452,11 @@
 				</div> <!--Chăm sóc cơ thể-->
 				<div class="col-3">
 					<div class="item" tabindex="-1" role="option" aria-describedby="slick-slide10" data-slick-index="0" aria-hidden="false" style="text-align: center;">
-						<a href="./" title="Nước hoa" class="pos-relative d-flex align-items-center" tabindex="0" style="display: block; margin: 0 auto;">
+						<a href="./PERFUME_NUOCHOA.html" title="Nước hoa" class="pos-relative d-flex align-items-center" tabindex="0" style="display: block; margin: 0 auto;">
 							<img class="img-fluid object-contain" src="https://img.upanh.tv/2024/10/24/nuochoa.png" width="150" height="150" alt="Nước hoa" style="display: block; margin-left: auto; margin-right: auto;">
 						</a>
 						<p class="mb-lg-5 mt-3">
-							<a href="#" title="Nước hoa" class="text-decoration-none fw-bold" style="color: black; font-size: 22px; padding-left: 0; text-align: center;">
+							<a href="./PERFUME_NUOCHOA.html" title="Nước hoa" class="text-decoration-none fw-bold" style="color: black; font-size: 22px; padding-left: 0; text-align: center;">
 								Nước hoa
 							</a>
 						</p>
@@ -512,7 +490,10 @@
 												<h5 class="product-title">DEAR DAHLIA</h5>
 												<p class="product-description">Phấn Phủ Bột Kiềm Dầu Dear Dahlia Skin Paradise Soft Velvet Finishing Powder 12g</p>
 												<p class="product-price">1.219.000<sup>đ</sup> </p>
-												<a href="#" class="add-to-cart">THÊM VÀO GIỎ HÀNG</a>
+												<button class="button-addtocart" onclick="addToCart('Phấn Phủ Bột Kiềm Dầu Dear Dahlia Skin Paradise Soft Velvet Finishing Powder 12g', 'https://image.hsv-tech.io/600x600/bbx/common/372034d5-8d65-4d55-863d-802f34e0da84.webp', 1219000)">
+													<i class="fa fa-cart-plus"></i>
+													THÊM VÀO GIỎ HÀNG
+												</button>
 												<p class="mt-2">★★★★★</p>
 											</div>	
 										</div>
@@ -532,7 +513,10 @@
 												<h5 class="product-title">CNP</h5>
 												<p class="product-description">Tinh Chất Keo Ong Tái Tạo Phục Hồi Da CNP Laboratory Propolis Energy Ampule</p>
 												<p class="product-price">610.000<sup>đ</sup> </p>
-												<a href="#" class="add-to-cart">THÊM VÀO GIỎ HÀNG</a>
+												<button class="button-addtocart" onclick="addToCart('Tinh Chất Keo Ong Tái Tạo Phục Hồi Da CNP Laboratory Propolis Energy Ampule', 'https://image.hsv-tech.io/600x600/bbx/common/e427c1f8-4d90-4dd4-9319-2d1864d7dd34.webp', 1219000)">
+													<i class="fa fa-cart-plus"></i>
+													THÊM VÀO GIỎ HÀNG
+												</button>
 												<p class="mt-2">★★★★★</p>
 											</div>	
 										</div>
@@ -550,9 +534,12 @@
 												</button>												
 
 												<h5 class="product-title">CLUB CLIO</h5>
-												<p class="product-description">(Ver. Luxury Koshort) Phấn Nước Clio Kiềm Dầu, Lâu Trôi Kill Cover Skin Fixer Cushion 15g </p>
+												<p class="product-description">(Ver. Luxury Koshort) Phấn Nước Clio Kiềm Dầu, Lâu Trôi Kill Cover Skin Fixer Cushion</p>
 												<p class="product-price">509.000<sup>đ</sup> </p>
-												<a href="#" class="add-to-cart">THÊM VÀO GIỎ HÀNG</a>
+												<button class="button-addtocart" onclick="addToCart('(Ver. Luxury Koshort) Phấn Nước Clio Kiềm Dầu, Lâu Trôi Kill Cover Skin Fixer Cushion', 'https://image.hsv-tech.io/600x600/bbx/common/77523a4f-91e5-4830-98c2-c4c073a170ec.webp', 509000)">
+													<i class="fa fa-cart-plus"></i>
+													THÊM VÀO GIỎ HÀNG
+												</button>
 												<p class="mt-2">★★★★★</p>
 											</div>	
 										</div>
@@ -570,9 +557,12 @@
 												</button>												
 
 												<h5 class="product-title">MAYBELLINE</h5>
-												<p class="product-description"> (Phiên bản mới) Son Kem Bóng Maybelline Superstay Vinyl Ink 4.2ml</p> 
+												<p class="product-description">(Phiên bản mới) Son Kem Bóng Maybelline Superstay Vinyl Ink 4.2ml</p> 
 												<p class="product-price">298.000<sup>đ</sup> </p>
-												<a href="#" class="add-to-cart">THÊM VÀO GIỎ HÀNG</a>
+												<button class="button-addtocart" onclick="addToCart('(Phiên bản mới) Son Kem Bóng Maybelline Superstay Vinyl Ink 4.2ml', 'ttps://image.hsv-tech.io/600x600/bbx/common/61acf39d-ed32-4154-a8a0-2f5500378711.webp', 298000)">
+													<i class="fa fa-cart-plus"></i>
+													THÊM VÀO GIỎ HÀNG
+												</button>
 												<p class="mt-2">★★★★★</p>
 											</div>	
 										</div>
@@ -599,7 +589,10 @@
 												<h5 class="product-title">L'OREAL PARIS</h5>
 												<p class="product-description"> (Phiên bản mới) Mascara Làm Dày Mi L'Oreal Voluminous Lash Paradise 10Ml</p>
 												<p class="product-price">319.000<sup>đ</sup> </p>
-												<a href="#" class="add-to-cart">THÊM VÀO GIỎ HÀNG</a>
+												<button class="button-addtocart" onclick="addToCart('(Phiên bản mới) Mascara Làm Dày Mi L Oreal Voluminous Lash Paradise 10Ml', 'https://image.hsv-tech.io/600x600/bbx/common/2a119155-cea2-4147-9437-d72a0dccf315.web', 319000)">
+													<i class="fa fa-cart-plus"></i>
+													THÊM VÀO GIỎ HÀNG
+												</button>
 												<p class="mt-2">★★★★★</p>
 											</div>	
 										</div>
@@ -620,7 +613,10 @@
 												<h5 class="product-title">CNP</h5>
 												<p class="product-description">Sữa Rửa Mặt CNP Làm Sạch Sâu Cho Da Mụn Ac-Pro Bubble Foam Cleanser 150ml</p>
 												<p class="product-price">530.000<sup>đ</sup> </p>
-												<a href="#" class="add-to-cart">THÊM VÀO GIỎ HÀNG</a>
+												<button class="button-addtocart" onclick="addToCart('Sữa Rửa Mặt CNP Làm Sạch Sâu Cho Da Mụn Ac-Pro Bubble Foam Cleanser 150ml', 'https://image.hsv-tech.io/600x600/bbx/common/e7e92572-54fb-4470-a783-c5adc51f81af.webp', 530000)">
+													<i class="fa fa-cart-plus"></i>
+													THÊM VÀO GIỎ HÀNG
+												</button>
 												<p class="mt-2">★★★★★</p>
 											</div>	
 										</div>
@@ -641,7 +637,10 @@
 												<h5 class="product-title">COCOON</h5>
 												<p class="product-description"> (Phiên bản mới) Sữa Chống Nắng Cocoon Bí Đao Winter Melon Sun Fluid</p>
 												<p class="product-price">185.000<sup>đ</sup> </p>
-												<a href="#" class="add-to-cart">THÊM VÀO GIỎ HÀNG</a>
+												<button class="button-addtocart" onclick="addToCart('(Phiên bản mới) Sữa Chống Nắng Cocoon Bí Đao Winter Melon Sun Fluid', 'https://image.hsv-tech.io/600x600/bbx/common/b016af7b-5990-4a5c-b038-3ce8d4d5cd36.webp', 185000)">
+													<i class="fa fa-cart-plus"></i>
+													THÊM VÀO GIỎ HÀNG
+												</button>
 												<p class="mt-2">★★★★★</p>
 											</div>	
 										</div>
@@ -660,7 +659,10 @@
 												<h5 class="product-title">L'OREAL PARIS</h5>
 												<p class="product-description">Tinh Chất Cấp Ẩm Căng Mướt Da L'Oreal Paris Revitalift Hyaluronic Acid Serum</p>
 												<p class="product-price">229.000<sup>đ</sup> </p>
-												<a href="#" class="add-to-cart">THÊM VÀO GIỎ HÀNG</a>
+												<button class="button-addtocart" onclick="addToCart('Tinh Chất Cấp Ẩm Căng Mướt Da L Oreal Paris Revitalift Hyaluronic Acid Serum', 'https://image.hsv-tech.io/600x600/bbx/common/b94d01ed-2ad1-407d-9ea7-f773f705ac1b.webp', 229000)">
+													<i class="fa fa-cart-plus"></i>
+													THÊM VÀO GIỎ HÀNG
+												</button>
 												<p class="mt-2">★★★★★</p>
 											</div>	
 										</div>
@@ -684,27 +686,27 @@
 			<p class="fs-2 fw-bold p-md-2" style="font-family:'Roboto Slab' ; text-align: center; ">TÌM KIẾM NHIỀU NHẤT</p>
 			<div class="ant-space ant-space-horizontal ant-space-align-center keyword-section" style="font-family: 'Roboto Slab'; font-weight: bold;">
 				<div class="ant-space-item">
-					<a role="presentation" href="/search?searchValue=nuoc%20hoa" style="color: rgb(238, 187, 196);">
+					<a role="presentation" href="./PERFUME_NUOCHOA.html" style="color: rgb(238, 187, 196);">
 						<div class="keyword-item">NƯỚC HOA</div>
 					</a>
 				</div>
 				<div class="ant-space-item">
-					<a role="presentation" href="/search?searchValue=son" style="color: rgb(238, 187, 196);">
+					<a role="presentation" href="./chamsocda.html" style="color: rgb(238, 187, 196);">
 						<div class="keyword-item">SỬA RỬA MẶT</div>
 					</a>
 				</div>
 				<div class="ant-space-item">
-					<a role="presentation" href="/search?searchValue=skincare" style="color: rgb(238, 187, 196);">
+					<a role="presentation" href="./chamsocda2.html" style="color: rgb(238, 187, 196);">
 						<div class="keyword-item">TONER</div>
 					</a>
 				</div>
 				<div class="ant-space-item">
-					<a role="presentation" href="/search?searchValue=kem%20chong%20nang" style="color: rgb(238, 187, 196);">
+					<a role="presentation" href="./moi.html" style="color: rgb(238, 187, 196);">
 						<div class="keyword-item">SON</div>
 					</a>
 				</div>
 				<div class="ant-space-item">
-					<a role="presentation" href="/search?searchValue=makeup" style="color: rgb(238, 187, 196);">
+					<a role="presentation" href="./trangdiem.html" style="color: rgb(238, 187, 196);">
 						<div class="keyword-item">PHẤN</div>
 					</a>
 				</div>
@@ -895,38 +897,42 @@
 					<p>Chi nhánh 2: 290 Phạm Ngũ Lão, Phú Hội, TP. Huế</p>
 				</div>
 			</div>
-			<div class="col-md-6">
-				<h5 class="text-center">PHƯƠNG THỨC THANH TOÁN</h5>
-				<div class="text-center">
-					<div class="container text-center mt-3">
-						<div class="row justify-content-center mt-4">
-							<div class="col-md-12 d-flex justify-content-center payment-container">
-								<a href="https://www.visa.com.vn/vi_VN/pay-with-visa/featured-technologies/mobile-payments.html" class="payment-icon">
-									<img src="https://img.upanh.tv/2024/10/30/VISA-Logo-1976.png" alt="Visa Payment" class="img-fluid" style="max-width: 90px;">
-								</a>
-								<a href="https://developers.momo.vn/v3/vi/docs/payment/guides/payment-with-aio/" class="payment-icon">
-									<img src="https://img.upanh.tv/2024/10/30/mom.jpg" alt="MoMo Payment" class="img-fluid">
-								</a>
-								<a href="https://vivnpay.vn/blog/vnpayqr-vi-vnpay" target="_blank" class="payment-icon">
-									<img src="https://img.upanh.tv/2024/10/30/vnpay.png" alt="VNPay Payment" class="img-fluid">
-								</a>
-								<a href="https://zalopay.vn/" target="_blank" class="payment-icon">
-									<img src="https://img.upanh.tv/2024/10/30/Logo-ZaloPay-Square.jpg" alt="ZaloPay Payment" class="img-fluid">
-								</a>
-								<a href="https://ghn.vn/" target="_blank" class="payment-icon" style="margin-top: -12px">
-									<img src="https://img.upanh.tv/2024/10/30/Logo-GHN.png" alt="GHN" class="img-fluid" style="max-width: 140px;">
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>			
+			<div class="row">
+                <div class="col-md-6">
+                    <h5 class="text-center">PHƯƠNG THỨC THANH TOÁN</h5>
+                    <div class="text-center">
+                        <div class="container text-center mt-3">
+                            <div class="justify-content-center mt-4">
+                                <div class="d-flex justify-content-center payment-container">
+                                    <a href="https://www.visa.com.vn/vi_VN/pay-with-visa/featured-technologies/mobile-payments.html" class="payment-icon">
+                                        <img src="https://img.upanh.tv/2024/10/30/VISA-Logo-1976.png" alt="Visa Payment" class="img-fluid" style="max-width: 80px;">
+                                    </a>
+                                    <a href="https://developers.momo.vn/v3/vi/docs/payment/guides/payment-with-aio/" class="payment-icon">
+                                        <img src="https://img.upanh.tv/2024/10/30/mom.jpg" alt="MoMo Payment" class="img-fluid"  style="width: 40px;">
+                                    </a>
+                                    <a href="https://vivnpay.vn/blog/vnpayqr-vi-vnpay" target="_blank" class="payment-icon">
+                                        <img src="https://img.upanh.tv/2024/10/30/vnpay.png" alt="VNPay Payment" class="img-fluid"  style="width: 40px;">
+                                    </a>
+                                    <a href="https://zalopay.vn/" target="_blank" class="payment-icon">
+                                        <img src="https://img.upanh.tv/2024/10/30/Logo-ZaloPay-Square.jpg" alt="ZaloPay Payment" class="img-fluid" style="width: 40px;">
+                                    </a>
+                                    <a href="https://ghn.vn/" target="_blank" class="payment-icon" style="margin-top: -12px">
+                                        <img src="https://img.upanh.tv/2024/11/26/Logo-GHN-Orange.webp?fbclid=IwY2xjawGydJdleHRuA2FlbQIxMAABHVDd1i3r_hU6MLHztyuS8qY2-bJ5YRG9bJD3_c4ZtwsQuZ4edsM575VIXA_aem_Cr4WcULiY3KHxxwzT3CofA" alt="GHN" class="img-fluid">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>	
+            </div>			
 			<div class="row">
 				<div class="text-center mt-4 border-top border-dark">
 					<p class="pt-4 pt-lg-5">© Bản quyền thuộc công ty G.N.T COSMETICS | Cung cấp bởi Sapo</p>
 				</div>
 			</div>
 		</div>
-	</section> <!--footer-->
+	</section>
+	 <!--footer-->
+	 <script src="./script2.js"></script>
 </body>
 </html>
